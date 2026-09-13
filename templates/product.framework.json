@@ -199,13 +199,13 @@
               "settings": {
                 "variant_style": "buttons",
                 "show_swatches": true,
-                "option_label_text_color": "",
-                "variant_style_class": "default",
-                "custom_variant_background": "{{ settings.color_palette.background }}",
-                "custom_variant_text": "{{ settings.color_palette.foreground }}",
-                "custom_variant_border": "{{ settings.color_palette.foreground }}",
-                "selected_variant_style_class": "default",
-                "custom_selected_variant_background": "{{ settings.color_palette.foreground }}",
+                "option_label_text_color": "{{ settings.color_palette.color5 }}",
+                "variant_style_class": "custom",
+                "custom_variant_background": "{{ settings.color_palette.color5 }}",
+                "custom_variant_text": "{{ settings.color_palette.color1 }}",
+                "custom_variant_border": "{{ settings.color_palette.color5 }}",
+                "selected_variant_style_class": "custom",
+                "custom_selected_variant_background": "{{ settings.color_palette.color3 }}",
                 "custom_selected_variant_text": "{{ settings.color_palette.background }}",
                 "custom_selected_variant_border": "{{ settings.color_palette.foreground }}",
                 "alignment": "left",
@@ -213,6 +213,14 @@
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "framework_size_guide": {
+              "type": "framework-size-guide",
+              "settings": {
+                "page": "",
+                "label": "Size guide"
               },
               "blocks": {}
             },
@@ -301,13 +309,6 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
-            },
-            "framework_size_guide": {
-              "type": "framework-size-guide",
-              "settings": {
-                "label": "Size guide"
-              },
-              "blocks": {}
             }
           },
           "block_order": [
@@ -335,6 +336,46 @@
         "padding-block-end": 0,
         "framework_gallery_split": true,
         "framework_gallery_width": 55
+      }
+    },
+    "framework_features": {
+      "type": "framework-product-features",
+      "settings": {
+        "heading": "Design details",
+        "use_global_spacing": true,
+        "max_width": 1440,
+        "padding_top": 64,
+        "padding_bottom": 64,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "gap": 24,
+        "card_padding": 24,
+        "card_radius": 0,
+        "card_border": 1,
+        "columns": "4",
+        "columns_mobile": "1"
+      }
+    },
+    "framework_details": {
+      "type": "framework-product-details",
+      "settings": {
+        "heading": "Material & fit",
+        "use_global_spacing": true,
+        "max_width": 1440,
+        "padding_top": 64,
+        "padding_bottom": 64,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "gap": 24,
+        "card_padding": 24,
+        "card_radius": 0,
+        "card_border": 1,
+        "columns": "4",
+        "columns_mobile": "1"
       }
     },
     "product_recommendations_qggXJq": {
@@ -477,18 +518,6 @@
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 48,
         "padding-block-end": 48
-      }
-    },
-    "framework_details": {
-      "type": "framework-product-details",
-      "settings": {
-        "heading": "Material & fit"
-      }
-    },
-    "framework_features": {
-      "type": "framework-product-features",
-      "settings": {
-        "heading": "Design details"
       }
     }
   },
