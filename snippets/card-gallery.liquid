@@ -55,6 +55,13 @@
       assign ratio = product.featured_media.preview_image.aspect_ratio | default: '1'
   endcase
 
+  if settings.framework_cards and settings.framework_card_ratio != 'inherit'
+    assign ratio = settings.framework_card_ratio
+    if ratio == 'adapt'
+      assign ratio = product.featured_media.preview_image.aspect_ratio | default: '1'
+    endif
+  endif
+
   if block_settings.image_ratio == 'adapt' and block_settings.constrain_to_viewport
     if block_settings.constrain_to_viewport != ''
       assign constrain_to_viewport = true

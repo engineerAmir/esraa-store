@@ -57,12 +57,33 @@
         {%- liquid
           assign swatch_count = product_option.values | map: 'swatch' | compact | size
           assign variant_style = block_settings.variant_style
+          assign option_id_attribute = blank
+          assign longest_value = 0
+          assign normalized_option_name = product_option.name | downcase | strip
+          assign color_names = settings.framework_color_names | downcase | split: ','
+          assign size_names = settings.framework_size_names | downcase | split: ','
+          assign is_color_option = false
+          assign is_size_option = false
+          for option_name in color_names
+            assign normalized_name = option_name | strip
+            if normalized_name == normalized_option_name
+              assign is_color_option = true
+            endif
+          endfor
+          for option_name in size_names
+            assign normalized_name = option_name | strip
+            if normalized_name == normalized_option_name
+              assign is_size_option = true
+            endif
+          endfor
 
-          if swatch_count > 0 and block_settings.show_swatches
-            if block_settings.variant_style == 'dropdown'
-              assign variant_style = 'swatch_dropdown'
-            else
-              assign variant_style = 'swatch'
+          if block_settings.show_swatches
+            if swatch_count > 0 or is_color_option
+              if block_settings.variant_style == 'dropdowns'
+                assign variant_style = 'dropdowns'
+              else
+                assign variant_style = 'swatch'
+              endif
             endif
           endif
 
@@ -88,7 +109,7 @@
           </div>
         {%- elsif variant_style == 'swatch' or block_settings.variant_style == 'buttons' -%}
           <fieldset
-            class="variant-option variant-option--buttons{% if variant_style == 'swatch' %} variant-option--swatches{% else %} variant-option--{{ settings.variant_button_width }}{% endif %}"
+            class="variant-option variant-option--buttons{% if is_size_option %} framework-size-options{% endif %}{% if variant_style == 'swatch' %} variant-option--swatches{% else %} variant-option--{{ settings.variant_button_width }}{% endif %}"
             data-fieldset-index="{{ fieldset_index }}"
             ref="fieldsets[]"
             {{ option_id_attribute }}
@@ -143,11 +164,15 @@
                     endif
                   %}
 
+                  {% if product_option_value.swatch != blank or featured_media != blank %}
                   {% render 'swatch',
                     swatch: product_option_value.swatch,
                     variant_image: featured_media,
                     mode: 'unscaled'
                   %}
+                  {% else %}
+                    <span class="variant-option__button-label__text">{{ product_option_value | escape }}</span>
+                  {% endif %}
                 {% else %}
                   {% if product_option_value.available == true %}
                     <span

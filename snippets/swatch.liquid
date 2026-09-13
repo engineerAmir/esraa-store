@@ -23,6 +23,10 @@
     assign swatch_value = 'url(' | append: swatch_image_url | append: ')'
   elsif swatch.color
     assign swatch_value = 'rgb(' | append: swatch.color.rgb | append: ')'
+  elsif variant_image
+    assign swatch_image_url = variant_image | image_url: width: 128
+    assign swatch_value = 'url(' | append: swatch_image_url | append: ')'
+    assign extra_classes = extra_classes | append: ' swatch--variant-image'
   endif
 
   case mode

@@ -49,7 +49,10 @@
     }
   ],
   "disabled_on": {
-    "groups": ["header", "footer"]
+    "groups": [
+      "header",
+      "footer"
+    ]
   },
   "settings": [
     {
@@ -145,6 +148,22 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "framework_gallery_split",
+      "label": "Use custom gallery width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "framework_gallery_width",
+      "label": "Gallery width",
+      "min": 40,
+      "max": 70,
+      "step": 1,
+      "default": 55,
+      "unit": "%"
     }
   ],
   "presets": [
@@ -206,7 +225,10 @@
                   }
                 }
               },
-              "block_order": ["title", "price"]
+              "block_order": [
+                "title",
+                "price"
+              ]
             },
             "review_stars": {
               "type": "review",
@@ -235,7 +257,12 @@
               }
             }
           },
-          "block_order": ["header", "review_stars", "variant_picker", "buy_buttons"]
+          "block_order": [
+            "header",
+            "review_stars",
+            "variant_picker",
+            "buy_buttons"
+          ]
         }
       }
     }

@@ -154,6 +154,16 @@
             endif
           endfor
 
+          if settings.framework_size_filters
+            assign size_filter_names = settings.framework_size_names | downcase | split: ','
+            assign normalized_filter_label = filter.label | downcase | strip
+            for size_filter_name in size_filter_names
+              assign normalized_size_name = size_filter_name | strip
+              if normalized_filter_label == normalized_size_name
+                assign should_use_pills = true
+              endif
+            endfor
+          endif
           if filter.type == 'boolean'
             assign should_use_pills = false
           endif

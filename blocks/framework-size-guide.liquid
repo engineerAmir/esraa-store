@@ -1,0 +1,36 @@
+{% if block.settings.page != blank %}
+  <framework-size-guide class="framework-size-guide" {{ block.shopify_attributes }}>
+    <a href="{{ block.settings.page.url }}" data-guide-open>{{ block.settings.label | escape }}</a>
+    <dialog aria-labelledby="SizeGuideTitle-{{ section.id }}-{{ block.id }}">
+      <form method="dialog"><button type="submit" class="button-secondary" autofocus>{{ 'actions.close' | t }}</button></form>
+      <h2 id="SizeGuideTitle-{{ section.id }}-{{ block.id }}">{{ block.settings.page.title | escape }}</h2>
+      <div class="rte">{{ block.settings.page.content }}</div>
+    </dialog>
+  </framework-size-guide>
+  <script src="{{ 'framework-size-guide.js' | asset_url }}" type="module" fetchpriority="low"></script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Size guide",
+  "tag": null,
+  "settings": [
+    {
+      "type": "page",
+      "id": "page",
+      "label": "Size guide page"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Link label",
+      "default": "Size guide"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Size guide"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,36 @@
+{% liquid
+  assign field_key = block.settings.key
+  assign field = closest.product.metafields.custom[field_key]
+%}
+{% if field != blank %}
+  <div class="framework-metafield" {{ block.shopify_attributes }}>
+    {% if block.settings.label != blank %}<h3>{{ block.settings.label | escape }}</h3>{% endif %}
+    <div class="rte">{{ field | metafield_tag }}</div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product metafield",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "key",
+      "label": "Metafield key in custom namespace",
+      "default": "fabric_material",
+      "info": "Use a text or rich text metafield. For example: fit or care_instructions."
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Heading"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product metafield"
+    }
+  ]
+}
+{% endschema %}

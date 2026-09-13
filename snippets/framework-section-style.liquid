@@ -1,0 +1,17 @@
+{% doc %}
+  Shared spacing variables for framework sections.
+  @param {object} settings - Section settings.
+{% enddoc %}
+--framework-section-width: {{ settings.max_width }}px;
+--framework-padding-top: {% if settings.use_global_spacing %}var(--framework-section-space){% else %}{{ settings.padding_top }}px{% endif %};
+--framework-padding-bottom: {% if settings.use_global_spacing %}var(--framework-section-space){% else %}{{ settings.padding_bottom }}px{% endif %};
+--framework-padding-top-mobile: {{ settings.padding_top_mobile }}px;
+--framework-padding-bottom-mobile: {{ settings.padding_bottom_mobile }}px;
+--framework-margin-top: {{ settings.margin_top }}px;
+--framework-margin-bottom: {{ settings.margin_bottom }}px;
+--framework-detail-gap: {{ settings.gap }}px;
+--framework-detail-padding: {{ settings.card_padding }}px;
+--framework-detail-radius: {{ settings.card_radius }}px;
+--framework-detail-border: {{ settings.card_border }}px;
+--framework-columns: {{ settings.columns }};
+--framework-columns-mobile: {{ settings.columns_mobile }};

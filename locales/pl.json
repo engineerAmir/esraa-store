@@ -1,4 +1,17 @@
 {
+  "framework": {
+  "shipping": {
+    "remaining": "You're {{ amount }} away from free shipping.",
+    "unlocked": "You've unlocked free shipping."
+  },
+  "details": {
+    "fabric_material": "Fabric / Material",
+    "fit": "Fit",
+    "care_instructions": "Care instructions",
+    "model_height": "Model height",
+    "model_size": "Model size"
+  }
+},
   "blocks": {
     "load_video": "Załaduj film: {{ description }}",
     "sold_out": "Wyprzedane",
