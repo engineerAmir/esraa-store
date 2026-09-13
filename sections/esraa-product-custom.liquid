@@ -1,0 +1,1351 @@
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign has_media = false
+  if product.media.size > 0
+    assign has_media = true
+  endif
+
+  assign selected_media_id = current_variant.featured_media.id | default: product.featured_image.id
+  assign short_description = product.metafields.custom.short_description
+  assign fabric = product.metafields.custom.fabric
+  assign fit = product.metafields.custom.fit
+  assign care = product.metafields.custom.care
+  assign model_size = product.metafields.custom.model_size
+  assign model_height = product.metafields.custom.model_height
+
+  assign feature_1_title = product.metafields.custom.feature_1_title
+  assign feature_1_text = product.metafields.custom.feature_1_text
+  assign feature_2_title = product.metafields.custom.feature_2_title
+  assign feature_2_text = product.metafields.custom.feature_2_text
+  assign feature_3_title = product.metafields.custom.feature_3_title
+  assign feature_3_text = product.metafields.custom.feature_3_text
+  assign feature_4_title = product.metafields.custom.feature_4_title
+  assign feature_4_text = product.metafields.custom.feature_4_text
+
+  assign embroidery_image = product.metafields.custom.embroidery_image.value
+  assign neck_detail_image = product.metafields.custom.neck_detail_image.value
+  assign sleeve_detail_image = product.metafields.custom.sleeve_detail_image.value
+  assign back_view_image = product.metafields.custom.back_view_image.value
+
+  assign has_sale = false
+  assign sale_percentage = 0
+  if current_variant.compare_at_price > current_variant.price
+    assign has_sale = true
+    assign sale_percentage = current_variant.compare_at_price | minus: current_variant.price
+    assign sale_percentage = sale_percentage | times: 100.0
+    assign sale_percentage = sale_percentage | divided_by: current_variant.compare_at_price
+    assign sale_percentage = sale_percentage | round
+  endif
+%}
+
+<section
+  class="esraa-product"
+  style="--esraa-bg: {{ section.settings.background }}; --esraa-text: {{ section.settings.primary_text }}; --esraa-muted: {{ section.settings.secondary_text }}; --esraa-border: {{ section.settings.border }}; --esraa-accent: {{ section.settings.primary_text }}; --esraa-cart-bg: {{ section.settings.add_to_cart_background }}; --esraa-cart-text: {{ section.settings.add_to_cart_text }}; --esraa-sale-bg: {{ section.settings.sale_badge_background }}; --esraa-sale-text: {{ section.settings.sale_badge_text }}; --esraa-feature-bg: {{ section.settings.feature_strip_background }}; --esraa-max-width: {{ section.settings.section_max_width }}px; --esraa-content-gap: {{ section.settings.column_gap }}px; --esraa-thumb-width: {{ section.settings.thumbnail_width }}px; --esraa-desktop-main-radius: {{ section.settings.desktop_image_radius }}px; --esraa-mobile-main-radius: {{ section.settings.mobile_image_radius }}px; --esraa-title-size: {{ section.settings.desktop_title_size }}px; --esraa-title-size-mobile: {{ section.settings.mobile_title_size }}px; --esraa-price-size: {{ section.settings.price_size }}px; --esraa-desktop-padding-top: {{ section.settings.desktop_top_padding }}px; --esraa-desktop-padding-bottom: {{ section.settings.desktop_bottom_padding }}px; --esraa-mobile-padding: {{ section.settings.mobile_padding }}px;"
+>
+  <div class="esraa-product__inner">
+    <div class="esraa-product__gallery-wrap">
+      {% if has_media and section.settings.show_thumbnails %}
+        <div class="esraa-product__thumbs" aria-label="Product thumbnails">
+          {% for media in product.media %}
+            {% assign media_id = media.id %}
+            <button
+              class="esraa-product__thumb{% if media_id == selected_media_id %} is-active{% endif %}"
+              type="button"
+              data-esraa-thumb="{{ forloop.index0 }}"
+              aria-label="View image {{ forloop.index }}"
+              aria-pressed="{% if media_id == selected_media_id %}true{% else %}false{% endif %}"
+            >
+              {% if media.preview_image %}
+                {{ media.preview_image | image_url: width: 220 | image_tag: loading: 'lazy', widths: '80,120,180,220', sizes: '80px', class: 'esraa-product__thumb-image', alt: media.alt | escape }}
+              {% endif %}
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="esraa-product__gallery" data-esraa-gallery>
+        {% if section.settings.show_new_badge %}
+          <span class="esraa-product__badge">NEW</span>
+        {% endif %}
+
+        {% if section.settings.show_wishlist %}
+          <button class="esraa-product__wishlist" type="button" aria-label="Save product">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.25c-.28 0-.56-.09-.77-.28L5.42 14.7A4.96 4.96 0 0 1 4 11.09a4.93 4.93 0 0 1 8.44-3.47l.56.57.56-.57A4.93 4.93 0 1 1 20 11.09a4.96 4.96 0 0 1-1.42 3.61l-5.81 5.27a1.09 1.09 0 0 1-.77.28Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        {% endif %}
+
+        {% if product.media.size > 1 and section.settings.show_image_arrows %}
+          <button class="esraa-product__arrow esraa-product__arrow--prev" type="button" aria-label="Previous image">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6.5 9 12l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="esraa-product__arrow esraa-product__arrow--next" type="button" aria-label="Next image">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6.5 15 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        {% endif %}
+
+        {% if product.media.size > 1 and section.settings.show_image_counter %}
+          <div class="esraa-product__counter"><span data-esraa-count-current>1</span> / <span>{{ product.media.size }}</span></div>
+        {% endif %}
+
+        {% for media in product.media %}
+          {% assign is_active = false %}
+          {% if media.id == selected_media_id %}
+            {% assign is_active = true %}
+          {% endif %}
+          <div class="esraa-product__slide{% if is_active %} is-active{% endif %}" data-esraa-slide="{{ forloop.index0 }}" aria-hidden="{% if is_active %}false{% else %}true{% endif %}">
+            {% if media.media_type == 'image' %}
+              {{ media | image_url: width: 1500 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(max-width: 749px) 100vw, 50vw', widths: '400,600,800,1000,1200,1500', class: 'esraa-product__image', alt: media.alt | escape }}
+            {% elsif media.media_type == 'video' %}
+              {{ media | video_tag: controls: false, muted: true, autoplay: true, loop: true, class: 'esraa-product__image' }}
+            {% elsif media.media_type == 'external_video' %}
+              {{ media | external_video_tag: class: 'esraa-product__image' }}
+            {% else %}
+              {{ media | image_url: width: 1500 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(max-width: 749px) 100vw, 50vw', widths: '400,600,800,1000,1200,1500', class: 'esraa-product__image', alt: media.alt | escape }}
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="esraa-product__details">
+      {% if section.settings.show_product_type %}
+        <p class="esraa-product__type">{{ product.type | upcase }}</p>
+      {% endif %}
+
+      <h1 class="esraa-product__title">{{ product.title }}</h1>
+
+      {% if short_description != blank and section.settings.show_short_description %}
+        <div class="esraa-product__description">{{ short_description }}</div>
+      {% endif %}
+
+      <div class="esraa-product__price-row">
+        {% if has_sale and section.settings.show_sale_badge %}
+          <span class="esraa-product__sale-badge">{{ sale_percentage }}% OFF</span>
+        {% endif %}
+
+        <div class="esraa-product__price-wrap">
+          <span class="esraa-product__price">{{ current_variant.price | money }}</span>
+          {% if current_variant.compare_at_price > current_variant.price %}
+            <span class="esraa-product__compare-price">{{ current_variant.compare_at_price | money }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      {% unless product.has_only_default_variant %}
+        <div class="esraa-product__options">
+          {% render 'variant-main-picker', product_resource: product, section: section, product: product %}
+        </div>
+      {% endunless %}
+
+      <product-form-component
+        data-section-id="{{ section.id }}"
+        data-product-id="{{ product.id }}"
+        data-product-url="{{ product.url }}"
+        on:submit="/handleSubmit"
+        data-quantity-default="1"
+      >
+        <form id="esraa-product-form-{{ section.id }}" action="/cart/add" method="post" accept-charset="UTF-8" data-type="add-to-cart-form">
+          <input type="hidden" name="id" ref="variantId" value="{{ current_variant.id }}">
+          <button class="esraa-product__add-to-cart" type="submit" {% unless current_variant.available %}disabled{% endunless %}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 8.5V7.2A4.5 4.5 0 0 1 12 2.75a4.5 4.5 0 0 1 4.5 4.45v1.3M5.5 9.5h13l-.9 9.5a2 2 0 0 1-2 1.8h-7.2a2 2 0 0 1-2-1.8L5.5 9.5Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>
+              {% if current_variant.available %}
+                {{ 'products.product.add_to_cart' | t }}
+              {% elsif current_variant == blank %}
+                {{ 'products.product.unavailable' | t }}
+              {% else %}
+                {{ 'products.product.sold_out' | t }}
+              {% endif %}
+            </span>
+          </button>
+        </form>
+      </product-form-component>
+
+      {% if section.settings.show_trust_area %}
+        <div class="esraa-product__trust">
+          <div class="esraa-product__trust-row">
+            <span class="esraa-product__trust-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5 12 4l9 5.5M5 10.5v6.5h14v-6.5M9 16.5h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 12.5h8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </span>
+            <div>
+              <strong>{{ section.settings.trust_shipping_title }}</strong>
+              <span>{{ section.settings.trust_shipping_text }}</span>
+            </div>
+          </div>
+          <div class="esraa-product__trust-row">
+            <span class="esraa-product__trust-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10.5V8A5 5 0 0 1 12 3a5 5 0 0 1 5 5v2.5M6.5 10.5h11l-.8 8.5a2 2 0 0 1-2 1.8h-5.4a2 2 0 0 1-2-1.8l-.8-8.5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <div>
+              <strong>{{ section.settings.trust_payment_title }}</strong>
+              <span>{{ section.settings.trust_payment_text }}</span>
+            </div>
+          </div>
+          <div class="esraa-product__trust-row">
+            <span class="esraa-product__trust-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5c0-4 3.5-7.5 8-7.5s8 3.5 8 7.5c0 3.5-2.5 6.2-6 7.2v2.8l-2-1.5-2 1.5v-2.8c-3.5-1-6-3.7-6-7.2Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 11.5h7M12 8v7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </span>
+            <div>
+              <strong>{{ section.settings.trust_returns_title }}</strong>
+              <span>{{ section.settings.trust_returns_text }}</span>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if section.settings.show_feature_strip %}
+    {% liquid
+      assign feature_items = ''
+      if feature_1_title != blank or feature_1_text != blank
+        assign feature_items = feature_items | append: 'feature_1|' 
+      endif
+      if feature_2_title != blank or feature_2_text != blank
+        assign feature_items = feature_items | append: 'feature_2|' 
+      endif
+      if feature_3_title != blank or feature_3_text != blank
+        assign feature_items = feature_items | append: 'feature_3|' 
+      endif
+      if feature_4_title != blank or feature_4_text != blank
+        assign feature_items = feature_items | append: 'feature_4|' 
+      endif
+    %}
+
+    {% assign has_feature_items = false %}
+    {% if feature_1_title != blank or feature_1_text != blank or feature_2_title != blank or feature_2_text != blank or feature_3_title != blank or feature_3_text != blank or feature_4_title != blank or feature_4_text != blank %}
+      {% assign has_feature_items = true %}
+    {% endif %}
+
+    {% if has_feature_items %}
+      <div class="esraa-product__features">
+        {% if feature_1_title != blank or feature_1_text != blank %}
+          <div class="esraa-product__feature-item">
+            <span class="esraa-product__feature-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8c.4 2 1.8 3.4 3.8 4.5C15.5 9 15 10.4 15 12c0 1.8.8 3.6 2.4 4.8-1.7.8-3.3 1.1-5.4 1.1-2.2 0-3.9-.3-5.4-1.1C8.2 15.6 9 13.8 9 12c0-1.6-.5-3-1.8-4.7 2-1.1 3.4-2.5 3.8-4.5Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <div>
+              {% if feature_1_title != blank %}<strong>{{ feature_1_title }}</strong>{% endif %}
+              {% if feature_1_text != blank %}<span>{{ feature_1_text }}</span>{% endif %}
+            </div>
+          </div>
+        {% endif %}
+        {% if feature_2_title != blank or feature_2_text != blank %}
+          <div class="esraa-product__feature-item">
+            <span class="esraa-product__feature-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20c-1.8-2.2-3.5-4.1-3.5-6.4A3.5 3.5 0 0 1 12 10a3.5 3.5 0 0 1 3.5 3.6C15.5 15.9 13.8 17.8 12 20ZM12 4.5v4M8.5 7.5h7M6 12h12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <div>
+              {% if feature_2_title != blank %}<strong>{{ feature_2_title }}</strong>{% endif %}
+              {% if feature_2_text != blank %}<span>{{ feature_2_text }}</span>{% endif %}
+            </div>
+          </div>
+        {% endif %}
+        {% if feature_3_title != blank or feature_3_text != blank %}
+          <div class="esraa-product__feature-item">
+            <span class="esraa-product__feature-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5h8l1 13H7l1-13Zm1 0V4a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 9.5h5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </span>
+            <div>
+              {% if feature_3_title != blank %}<strong>{{ feature_3_title }}</strong>{% endif %}
+              {% if feature_3_text != blank %}<span>{{ feature_3_text }}</span>{% endif %}
+            </div>
+          </div>
+        {% endif %}
+        {% if feature_4_title != blank or feature_4_text != blank %}
+          <div class="esraa-product__feature-item">
+            <span class="esraa-product__feature-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2.5 2.2 4.5 5 .7-3.6 3.6 1 5-4.6-2.4-4.6 2.4 1-5-3.6-3.6 5-.7L12 2.5Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <div>
+              {% if feature_4_title != blank %}<strong>{{ feature_4_title }}</strong>{% endif %}
+              {% if feature_4_text != blank %}<span>{{ feature_4_text }}</span>{% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endif %}
+
+  {% if section.settings.show_detail_gallery %}
+    {% liquid
+      assign detail_images = ''
+      if embroidery_image != blank
+        assign detail_images = detail_images | append: 'embroidery_image,'
+      endif
+      if neck_detail_image != blank
+        assign detail_images = detail_images | append: 'neck_detail_image,'
+      endif
+      if sleeve_detail_image != blank
+        assign detail_images = detail_images | append: 'sleeve_detail_image,'
+      endif
+      if back_view_image != blank
+        assign detail_images = detail_images | append: 'back_view_image,'
+      endif
+    %}
+
+    {% if embroidery_image != blank or neck_detail_image != blank or sleeve_detail_image != blank or back_view_image != blank %}
+      <div class="esraa-product__detail-gallery">
+        {% if embroidery_image != blank %}
+          <figure class="esraa-product__detail-card">
+            {{ embroidery_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200', sizes: '(max-width: 749px) 50vw, 25vw', class: 'esraa-product__detail-image', alt: 'Embroidery Detail' }}
+            <figcaption>Embroidery Detail</figcaption>
+          </figure>
+        {% endif %}
+        {% if neck_detail_image != blank %}
+          <figure class="esraa-product__detail-card">
+            {{ neck_detail_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200', sizes: '(max-width: 749px) 50vw, 25vw', class: 'esraa-product__detail-image', alt: 'Neck Detail' }}
+            <figcaption>Neck Detail</figcaption>
+          </figure>
+        {% endif %}
+        {% if sleeve_detail_image != blank %}
+          <figure class="esraa-product__detail-card">
+            {{ sleeve_detail_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200', sizes: '(max-width: 749px) 50vw, 25vw', class: 'esraa-product__detail-image', alt: 'Sleeve Detail' }}
+            <figcaption>Sleeve Detail</figcaption>
+          </figure>
+        {% endif %}
+        {% if back_view_image != blank %}
+          <figure class="esraa-product__detail-card">
+            {{ back_view_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200', sizes: '(max-width: 749px) 50vw, 25vw', class: 'esraa-product__detail-image', alt: 'Back View' }}
+            <figcaption>Back View</figcaption>
+          </figure>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endif %}
+
+  {% if section.settings.show_product_information %}
+    {% liquid
+      assign product_info_rows = ''
+      if fabric != blank
+        assign product_info_rows = product_info_rows | append: 'fabric|' 
+      endif
+      if fit != blank
+        assign product_info_rows = product_info_rows | append: 'fit|' 
+      endif
+      if care != blank
+        assign product_info_rows = product_info_rows | append: 'care|' 
+      endif
+      if model_size != blank or model_height != blank
+        assign product_info_rows = product_info_rows | append: 'model|' 
+      endif
+    %}
+
+    {% if fabric != blank or fit != blank or care != blank or model_size != blank or model_height != blank %}
+      <div class="esraa-product__info-panel">
+        <details class="esraa-product__details-accordion" open>
+          {% if fabric != blank %}
+            <summary>Fabric &amp; Material</summary>
+            <div>{{ fabric }}</div>
+          {% endif %}
+          {% if fit != blank %}
+            <summary>Fit</summary>
+            <div>{{ fit }}</div>
+          {% endif %}
+          {% if model_size != blank or model_height != blank %}
+            <summary>Model</summary>
+            <div>
+              {% if model_size != blank %}Size {{ model_size }}{% endif %}
+              {% if model_size != blank and model_height != blank %} — {% endif %}
+              {% if model_height != blank %}Height {{ model_height }}{% endif %}
+            </div>
+          {% endif %}
+          {% if care != blank %}
+            <summary>Care</summary>
+            <div>{{ care }}</div>
+          {% endif %}
+        </details>
+      </div>
+    {% endif %}
+  {% endif %}
+
+  {% if section.settings.show_divider %}
+    <div class="esraa-product__divider">
+      <span></span>
+      <span>{{ section.settings.divider_text }}</span>
+      <span></span>
+    </div>
+  {% endif %}
+</section>
+
+<script>
+  (() => {
+    const initGallery = () => {
+      document.querySelectorAll('[data-esraa-gallery]').forEach((gallery) => {
+        const slides = Array.from(gallery.querySelectorAll('[data-esraa-slide]'));
+        const thumbs = Array.from(document.querySelectorAll('[data-esraa-thumb]'));
+        const prev = gallery.querySelector('.esraa-product__arrow--prev');
+        const next = gallery.querySelector('.esraa-product__arrow--next');
+        const counter = gallery.querySelector('[data-esraa-count-current]');
+        let activeIndex = slides.findIndex((slide) => slide.classList.contains('is-active'));
+        if (activeIndex < 0) activeIndex = 0;
+
+        const updateGallery = (nextIndex) => {
+          if (!slides.length) return;
+          activeIndex = (nextIndex + slides.length) % slides.length;
+          slides.forEach((slide, index) => {
+            const isActive = index === activeIndex;
+            slide.classList.toggle('is-active', isActive);
+            slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+          });
+          thumbs.forEach((thumb, index) => {
+            const isActive = index === activeIndex;
+            thumb.classList.toggle('is-active', isActive);
+            thumb.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          });
+          if (counter) counter.textContent = String(activeIndex + 1);
+        };
+
+        if (prev) prev.addEventListener('click', () => updateGallery(activeIndex - 1));
+        if (next) next.addEventListener('click', () => updateGallery(activeIndex + 1));
+        thumbs.forEach((thumb) => {
+          thumb.addEventListener('click', () => updateGallery(Number(thumb.dataset.esraaThumb)));
+        });
+      });
+    };
+
+    if (window.Shopify && window.Shopify.designMode) {
+      document.addEventListener('shopify:section:load', initGallery);
+    }
+    initGallery();
+  })();
+</script>
+
+<style>
+  .esraa-product {
+    background: var(--esraa-bg);
+    color: var(--esraa-text);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    width: 100%;
+  }
+
+  .esraa-product__inner {
+    max-width: var(--esraa-max-width);
+    margin: 0 auto;
+    padding-top: var(--esraa-desktop-padding-top);
+    padding-bottom: var(--esraa-desktop-padding-bottom);
+    display: grid;
+    grid-template-columns: var(--esraa-thumb-width) minmax(0, 1fr) minmax(320px, 440px);
+    gap: var(--esraa-content-gap);
+    align-items: flex-start;
+  }
+
+  .esraa-product__gallery-wrap {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .esraa-product__thumbs {
+    width: var(--esraa-thumb-width);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 690px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding-right: 2px;
+  }
+
+  .esraa-product__thumbs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .esraa-product__thumb {
+    width: var(--esraa-thumb-width);
+    height: 114px;
+    border: 1px solid transparent;
+    background: transparent;
+    padding: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+  }
+
+  .esraa-product__thumb.is-active {
+    border-color: rgba(17, 17, 17, 0.9);
+  }
+
+  .esraa-product__thumb-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px;
+  }
+
+  .esraa-product__gallery {
+    position: relative;
+    width: min(100%, 680px);
+    aspect-ratio: 4 / 5;
+    background: #f6f0ea;
+    border-radius: var(--esraa-desktop-main-radius);
+    overflow: hidden;
+  }
+
+  .esraa-product__slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .esraa-product__slide.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .esraa-product__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .esraa-product__badge {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    z-index: 2;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--esraa-text);
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 4px;
+  }
+
+  .esraa-product__wishlist {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    z-index: 2;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(17, 17, 17, 0.12);
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--esraa-text);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+
+  .esraa-product__wishlist svg,
+  .esraa-product__arrow svg,
+  .esraa-product__add-to-cart svg,
+  .esraa-product__trust-icon svg,
+  .esraa-product__feature-icon svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
+  .esraa-product__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(17, 17, 17, 0.12);
+    background: rgba(255, 255, 255, 0.75);
+    color: rgba(17, 17, 17, 0.9);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+
+  .esraa-product__arrow--prev { left: 18px; }
+  .esraa-product__arrow--next { right: 18px; }
+
+  .esraa-product__counter {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    z-index: 2;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: rgba(17, 17, 17, 0.9);
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 999px;
+    padding: 7px 11px;
+  }
+
+  .esraa-product__details {
+    align-self: flex-start;
+    padding-top: 10px;
+  }
+
+  .esraa-product__type {
+    margin: 0 0 10px;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--esraa-muted);
+  }
+
+  .esraa-product__title {
+    margin: 0;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 400;
+    font-size: var(--esraa-title-size);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+    color: var(--esraa-text);
+  }
+
+  .esraa-product__description {
+    margin-top: 18px;
+    color: rgba(31, 31, 31, 0.78);
+    font-size: 17px;
+    line-height: 1.5;
+    max-width: 30ch;
+  }
+
+  .esraa-product__price-row {
+    margin-top: 23px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .esraa-product__price-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .esraa-product__price {
+    font-size: var(--esraa-price-size);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--esraa-text);
+  }
+
+  .esraa-product__compare-price {
+    color: rgba(17, 17, 17, 0.42);
+    text-decoration: line-through;
+    font-size: 16px;
+  }
+
+  .esraa-product__sale-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background: var(--esraa-sale-bg);
+    color: var(--esraa-sale-text);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .esraa-product__options {
+    margin-top: 28px;
+    display: grid;
+    gap: 20px;
+  }
+
+  .esraa-product__option {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  .esraa-product__option legend {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: var(--esraa-text);
+    font-weight: 500;
+  }
+
+  .esraa-product__option-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid rgba(17, 17, 17, 0.2);
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+    color: var(--esraa-text);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    position: relative;
+  }
+
+  .esraa-product__option-label input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .esraa-product__option-label.is-selected {
+    border-color: rgba(17, 17, 17, 0.9);
+    background: rgba(255, 255, 255, 0.4);
+  }
+
+  .esraa-product__option-label.is-disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .esraa-product__option-label.is-swatch {
+    padding: 0 14px 0 12px;
+    min-height: 38px;
+    gap: 10px;
+    border-radius: 999px;
+    border-color: rgba(17, 17, 17, 0.15);
+  }
+
+  .esraa-product__swatch {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--esraa-swatch-color);
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .esraa-product__swatch-text,
+  .esraa-product__size-text {
+    font-size: 15px;
+    line-height: 1;
+  }
+
+  .esraa-product__option-label.is-swatch .esraa-product__swatch-text {
+    font-size: 15px;
+  }
+
+  product-form-component {
+    display: block;
+    margin-top: 28px;
+  }
+
+  .esraa-product__add-to-cart {
+    width: 100%;
+    height: 56px;
+    border: 0;
+    border-radius: 6px;
+    background: var(--esraa-cart-bg);
+    color: var(--esraa-cart-text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 17px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .esraa-product__add-to-cart:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .esraa-product__trust {
+    margin-top: 26px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(17, 17, 17, 0.14);
+    display: grid;
+    gap: 14px;
+  }
+
+  .esraa-product__trust-row {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+  }
+
+  .esraa-product__trust-icon {
+    color: var(--esraa-text);
+    display: inline-flex;
+    width: 22px;
+    height: 22px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .esraa-product__trust-row strong,
+  .esraa-product__feature-item strong {
+    display: block;
+    font-weight: 500;
+    color: var(--esraa-text);
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  .esraa-product__trust-row span,
+  .esraa-product__feature-item span {
+    display: block;
+    color: var(--esraa-muted);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .esraa-product__features {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    background: var(--esraa-feature-bg);
+    margin-top: 26px;
+    border-top: 1px solid rgba(17, 17, 17, 0.08);
+    border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+  }
+
+  .esraa-product__feature-item {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+    padding: 28px 18px;
+    min-height: 128px;
+    border-right: 1px solid rgba(17, 17, 17, 0.08);
+  }
+
+  .esraa-product__feature-item:last-child {
+    border-right: none;
+  }
+
+  .esraa-product__feature-icon {
+    color: var(--esraa-text);
+    display: inline-flex;
+    width: 28px;
+    height: 28px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4px;
+  }
+
+  .esraa-product__detail-gallery {
+    max-width: var(--esraa-max-width);
+    margin: 0 auto;
+    padding: 0 0 24px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .esraa-product__detail-card {
+    margin: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  .esraa-product__detail-image {
+    width: 100%;
+    height: 330px;
+    object-fit: cover;
+    display: block;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .esraa-product__detail-card figcaption {
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: rgba(17, 17, 17, 0.74);
+  }
+
+  .esraa-product__divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    max-width: var(--esraa-max-width);
+    margin: 0 auto;
+    padding: 18px 0 30px;
+    color: rgba(17, 17, 17, 0.7);
+    font-size: 12px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  .esraa-product__divider span:first-child,
+  .esraa-product__divider span:last-child {
+    height: 1px;
+    background: rgba(17, 17, 17, 0.15);
+    flex: 1;
+  }
+
+  .esraa-product__details-accordion {
+    border-top: 1px solid rgba(17, 17, 17, 0.12);
+    margin-top: 28px;
+  }
+
+  .esraa-product__details-accordion summary {
+    list-style: none;
+    font-size: 17px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(17, 17, 17, 0.12);
+    cursor: pointer;
+    color: var(--esraa-text);
+  }
+
+  .esraa-product__details-accordion summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .esraa-product__details-accordion div {
+    padding: 14px 0 18px;
+    color: var(--esraa-muted);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  @media screen and (max-width: 989px) {
+    .esraa-product__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+    }
+
+    .esraa-product__thumbs {
+      max-height: 560px;
+    }
+
+    .esraa-product__features {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .esraa-product__detail-gallery {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .esraa-product {
+      background: var(--esraa-bg);
+    }
+
+    .esraa-product__inner {
+      max-width: 100%;
+      display: block;
+      padding-top: var(--esraa-mobile-padding);
+      padding-bottom: var(--esraa-mobile-padding);
+    }
+
+    .esraa-product__gallery-wrap {
+      display: block;
+      margin: 0;
+    }
+
+    .esraa-product__thumbs {
+      width: 100%;
+      max-height: none;
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0 16px 12px;
+      gap: 10px;
+      scrollbar-width: none;
+    }
+
+    .esraa-product__thumbs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .esraa-product__thumb {
+      width: 82px;
+      height: 82px;
+      flex-shrink: 0;
+    }
+
+    .esraa-product__gallery {
+      width: 100%;
+      border-radius: var(--esraa-mobile-main-radius);
+      aspect-ratio: 1 / 1.16;
+    }
+
+    .esraa-product__details {
+      padding: 12px 16px 0;
+    }
+
+    .esraa-product__title {
+      font-size: var(--esraa-title-size-mobile);
+    }
+
+    .esraa-product__description {
+      font-size: 15px;
+      max-width: none;
+    }
+
+    .esraa-product__price {
+      font-size: 30px;
+    }
+
+    .esraa-product__option-label.is-swatch {
+      min-height: 38px;
+      padding: 0 12px 0 10px;
+    }
+
+    .esraa-product__add-to-cart {
+      height: 54px;
+    }
+
+    .esraa-product__features {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 18px;
+    }
+
+    .esraa-product__feature-item {
+      min-height: 104px;
+      padding: 18px 12px;
+    }
+
+    .esraa-product__detail-gallery {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      padding: 0 16px 18px;
+    }
+
+    .esraa-product__detail-image {
+      height: 220px;
+    }
+
+    .esraa-product__divider {
+      padding-left: 16px;
+      padding-right: 16px;
+      font-size: 11px;
+      letter-spacing: 0.24em;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Editorial custom product",
+  "tag": "section",
+  "class": "esraa-product-custom",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "section_max_width",
+      "label": "Max width",
+      "min": 900,
+      "max": 1700,
+      "step": 10,
+      "unit": "px",
+      "default": 1300
+    },
+    {
+      "type": "range",
+      "id": "desktop_top_padding",
+      "label": "Desktop top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "desktop_bottom_padding",
+      "label": "Desktop bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding",
+      "label": "Mobile padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 8,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "thumbnail_width",
+      "label": "Thumbnail width",
+      "min": 60,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 88
+    },
+    {
+      "type": "header",
+      "content": "Display"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_type",
+      "label": "Show product type",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_short_description",
+      "label": "Show short description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_badge",
+      "label": "Show sale badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_new_badge",
+      "label": "Show new badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_arrows",
+      "label": "Show gallery arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_counter",
+      "label": "Show gallery counter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_thumbnails",
+      "label": "Show thumbnails",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Show wishlist icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_area",
+      "label": "Show trust area",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_feature_strip",
+      "label": "Show feature strip",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_detail_gallery",
+      "label": "Show detail gallery",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_information",
+      "label": "Show product information",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show divider",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "range",
+      "id": "desktop_image_radius",
+      "label": "Desktop image radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_radius",
+      "label": "Mobile image radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_title_size",
+      "label": "Desktop title size",
+      "min": 30,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "mobile_title_size",
+      "label": "Mobile title size",
+      "min": 24,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "price_size",
+      "label": "Price size",
+      "min": 20,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#f2efe9"
+    },
+    {
+      "type": "color",
+      "id": "primary_text",
+      "label": "Primary text",
+      "default": "#181510"
+    },
+    {
+      "type": "color",
+      "id": "secondary_text",
+      "label": "Secondary text",
+      "default": "#5f5f5a"
+    },
+    {
+      "type": "color",
+      "id": "border",
+      "label": "Border",
+      "default": "#d7d1c8"
+    },
+    {
+      "type": "color",
+      "id": "add_to_cart_background",
+      "label": "Add to cart background",
+      "default": "#1b1a18"
+    },
+    {
+      "type": "color",
+      "id": "add_to_cart_text",
+      "label": "Add to cart text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "sale_badge_background",
+      "label": "Sale badge background",
+      "default": "#f3d9d4"
+    },
+    {
+      "type": "color",
+      "id": "sale_badge_text",
+      "label": "Sale badge text",
+      "default": "#4a3d3a"
+    },
+    {
+      "type": "color",
+      "id": "feature_strip_background",
+      "label": "Feature strip background",
+      "default": "#efe8df"
+    },
+    {
+      "type": "header",
+      "content": "Trust content"
+    },
+    {
+      "type": "text",
+      "id": "trust_shipping_title",
+      "label": "Free shipping title",
+      "default": "Free Shipping"
+    },
+    {
+      "type": "text",
+      "id": "trust_shipping_text",
+      "label": "Free shipping text",
+      "default": "on orders over EGP 1,000"
+    },
+    {
+      "type": "text",
+      "id": "trust_payment_title",
+      "label": "Secure payment title",
+      "default": "Secure Payment"
+    },
+    {
+      "type": "text",
+      "id": "trust_payment_text",
+      "label": "Secure payment text",
+      "default": "100% secure checkout"
+    },
+    {
+      "type": "text",
+      "id": "trust_returns_title",
+      "label": "Easy returns title",
+      "default": "Easy Returns"
+    },
+    {
+      "type": "text",
+      "id": "trust_returns_text",
+      "label": "Easy returns text",
+      "default": "within 14 days"
+    },
+    {
+      "type": "text",
+      "id": "divider_text",
+      "label": "Divider text",
+      "default": "TIMELESS ELEGANCE"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial custom product",
+      "category": "Products"
+    }
+  ]
+}
+{% endschema %}

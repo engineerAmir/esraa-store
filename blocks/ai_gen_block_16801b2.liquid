@@ -1,0 +1,146 @@
+{% doc %}
+  @prompt
+    Create a premium “Designer Story” section for Esraa Fashion Designer.
+    
+    Desktop layout:
+    Large portrait/lifestyle image on one side and editorial text on the other.
+    
+    Small label:
+    “THE DESIGNER”
+    
+    Headline:
+    “A Feminine Vision of Modern Modesty”
+    
+    Text:
+    “Esraa Fashion Designer creates refined pieces for women who want modest dressing to feel expressive, polished, and unmistakably personal. Every collection balances graceful proportions with rich fabrics and considered detail.”
+    
+    CTA:
+    “Discover Esraa’s Vision”
+    
+    Design:
+    
+    * Warm ivory background.
+    * Large beautiful photography.
+    * Generous whitespace.
+    * Elegant serif-style heading.
+    * Dark charcoal body text.
+    * Burgundy/plum accent details.
+    * Soft rounded image corners.
+    * Subtle fade-up animation.
+    
+    Mobile:
+    Image first, text underneath.
+    Maintain comfortable spacing and readable typography.
+    
+    Make image, heading, text, CTA label, and link customizable.
+    , Create a premium “Designer Story” section for Esraa Fashion Designer.
+    
+    Desktop layout:
+    Large portrait/lifestyle image on one side and editorial text on the other.
+    
+    Small label:
+    “THE DESIGNER”
+    
+    Headline:
+    “A Feminine Vision of Modern Modesty”
+    
+    Text:
+    “Esraa Fashion Designer creates refined pieces for women who want modest dressing to feel expressive, polished, and unmistakably personal. Every collection balances graceful proportions with rich fabrics and considered detail.”
+    
+    CTA:
+    “Discover Esraa’s Vision”
+    
+    Design:
+    
+    * Warm ivory background.
+    * Large beautiful photography.
+    * Generous whitespace.
+    * Elegant serif-style heading.
+    * Dark charcoal body text.
+    * Burgundy/plum accent details.
+    * Soft rounded image corners.
+    * Subtle fade-up animation.
+    
+    Mobile:
+    Image first, text underneath.
+    Maintain comfortable spacing and readable typography.
+    
+    Make image, heading, text, CTA label, and link customizable.
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-designer-story-{{ ai_gen_id }} { display: block; width: {{ block.settings.desktop_width_percent }}%; max-width: 100%; margin: 0 auto; background: {{ block.settings.background_color }}; color: {{ block.settings.text_color }}; overflow: hidden; }
+  .ai-designer-story-{{ ai_gen_id }}__inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); align-items: center; gap: clamp(40px, 7vw, 112px); max-width: 1440px; margin: 0 auto; padding: clamp(56px, 9vw, 132px) clamp(24px, 6vw, 96px); }
+  .ai-designer-story-{{ ai_gen_id }}__media { position: relative; min-height: clamp(460px, 55vw, 760px); overflow: hidden; border-radius: {{ block.settings.image_radius }}px; background: #e8e1d8; }
+  .ai-designer-story-{{ ai_gen_id }}__media img, .ai-designer-story-{{ ai_gen_id }}__media svg { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .ai-designer-story-{{ ai_gen_id }}__empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: inherit; padding: 24px; color: #5e574f; text-align: center; }
+  .ai-designer-story-{{ ai_gen_id }}__empty svg { width: 100%; max-width: 420px; height: auto; margin-bottom: 14px; opacity: .55; }
+  .ai-designer-story-{{ ai_gen_id }}__empty-text { margin: 0; font-size: 13px; letter-spacing: .04em; }
+  .ai-designer-story-{{ ai_gen_id }}__content { max-width: 520px; opacity: 0; transform: translateY(22px); animation: ai-designer-story-fade-{{ ai_gen_id }} .8s ease-out .12s forwards; }
+  .ai-designer-story-{{ ai_gen_id }}__label { display: inline-flex; align-items: center; gap: 12px; margin: 0 0 24px; color: {{ block.settings.accent_color }}; font-size: 12px; font-weight: 600; letter-spacing: .18em; line-height: 1.4; text-transform: uppercase; }
+  .ai-designer-story-{{ ai_gen_id }}__label::before { content: ''; display: block; width: 34px; height: 1px; background: {{ block.settings.accent_color }}; }
+  .ai-designer-story-{{ ai_gen_id }}__heading { margin: 0 0 28px; color: {{ block.settings.heading_color }}; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(38px, 4.2vw, 70px); font-weight: 400; letter-spacing: -.035em; line-height: 1.06; }
+  .ai-designer-story-{{ ai_gen_id }}__text { max-width: 480px; margin: 0 0 36px; color: {{ block.settings.text_color }}; font-size: 16px; line-height: 1.85; }
+  .ai-designer-story-{{ ai_gen_id }}__cta { display: inline-flex; align-items: center; gap: 14px; color: {{ block.settings.accent_color }}; font-size: 13px; font-weight: 600; letter-spacing: .08em; line-height: 1.4; text-decoration: none; transition: gap .2s ease; }
+  .ai-designer-story-{{ ai_gen_id }}__cta::after { content: '→'; font-size: 20px; line-height: 1; }
+  .ai-designer-story-{{ ai_gen_id }}__cta:hover { gap: 20px; }
+  .ai-designer-story-{{ ai_gen_id }}__cta:focus-visible { outline: 2px solid {{ block.settings.accent_color }}; outline-offset: 6px; }
+  @keyframes ai-designer-story-fade-{{ ai_gen_id }} { to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .ai-designer-story-{{ ai_gen_id }}__content { animation: none; opacity: 1; transform: none; } .ai-designer-story-{{ ai_gen_id }}__cta { transition: none; } }
+  @media screen and (max-width: 749px) { .ai-designer-story-{{ ai_gen_id }}__inner { display: flex; flex-direction: column; align-items: stretch; gap: 42px; padding: 48px 20px 64px; } .ai-designer-story-{{ ai_gen_id }}__media { min-height: 112vw; max-height: 620px; } .ai-designer-story-{{ ai_gen_id }}__content { max-width: none; } .ai-designer-story-{{ ai_gen_id }}__label { margin-bottom: 18px; } .ai-designer-story-{{ ai_gen_id }}__heading { margin-bottom: 22px; font-size: clamp(38px, 12vw, 58px); } .ai-designer-story-{{ ai_gen_id }}__text { margin-bottom: 30px; font-size: 15px; line-height: 1.75; } }
+{% endstyle %}
+
+<designer-story-{{ ai_gen_id }} class="ai-designer-story-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-designer-story-{{ ai_gen_id }}__inner">
+    <div class="ai-designer-story-{{ ai_gen_id }}__media">
+      {% if block.settings.image != blank %}
+        <img src="{{ block.settings.image | image_url: width: 1600 }}" alt="{{ block.settings.image.alt | escape }}" loading="lazy" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}">
+      {% else %}
+        <div class="ai-designer-story-{{ ai_gen_id }}__empty">{{ 'image' | placeholder_svg_tag }}<p class="ai-designer-story-{{ ai_gen_id }}__empty-text">Add a portrait or lifestyle image</p></div>
+      {% endif %}
+    </div>
+    <div class="ai-designer-story-{{ ai_gen_id }}__content">
+      {% if block.settings.label != blank %}<p class="ai-designer-story-{{ ai_gen_id }}__label">{{ block.settings.label }}</p>{% endif %}
+      {% if block.settings.heading != blank %}<h2 class="ai-designer-story-{{ ai_gen_id }}__heading">{{ block.settings.heading }}</h2>{% endif %}
+      {% if block.settings.text != blank %}<div class="ai-designer-story-{{ ai_gen_id }}__text">{{ block.settings.text }}</div>{% endif %}
+      {% if block.settings.cta_label != blank and block.settings.cta_link != blank %}<a class="ai-designer-story-{{ ai_gen_id }}__cta" href="{{ block.settings.cta_link }}">{{ block.settings.cta_label }}</a>{% endif %}
+    </div>
+  </div>
+</designer-story-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    if (!customElements.get('designer-story-{{ ai_gen_id }}')) {
+      class DesignerStory{{ ai_gen_id }} extends HTMLElement {}
+      customElements.define('designer-story-{{ ai_gen_id }}', DesignerStory{{ ai_gen_id }});
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Designer story",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "label", "label": "Label", "default": "THE DESIGNER" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "A Feminine Vision of Modern Modesty" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Esraa Fashion Designer creates refined pieces for women who want modest dressing to feel expressive, polished, and unmistakably personal. Every collection balances graceful proportions with rich fabrics and considered detail." },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Discover Esraa’s Vision" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "image_radius", "label": "Image radius", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 16 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F6F1EA" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#292523" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#3E3936" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#6B263A" }
+  ],
+  "presets": [{ "name": "Designer story" }],
+  "tag": null,
+  "class": "designer-story-block"
+}
+{% endschema %}

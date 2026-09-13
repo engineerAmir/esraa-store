@@ -1,0 +1,345 @@
+{% doc %}
+  @prompt
+    Create a premium Shopify featured collection section for “Esraa Fashion Designer”.
+    
+    Small label:
+    “EDITOR’S SELECTION”
+    
+    Heading:
+    “Featured Pieces”
+    
+    Allow the merchant to select a Shopify collection.
+    
+    Display 4–6 products with large editorial product photography.
+    
+    Each product card should include:
+    
+    * Large portrait product image.
+    * Product name.
+    * Price.
+    * Compare-at price when available.
+    * Available color swatches.
+    * Quick Add button.
+    * Sold Out state when unavailable.
+    
+    Keep the product cards minimal without excessive borders or shadows.
+    
+    Desktop:
+    4 products per row.
+    
+    Mobile:
+    2 products per row.
+    
+    Use soft rounded image corners.
+    
+    On desktop hover:
+    
+    * Slight image zoom.
+    * Reveal Quick Add elegantly.
+    * If a second product image exists, optionally transition to it.
+    
+    Prioritize photography and make the section feel like a designer fashion boutique rather than a generic ecommerce product grid.
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-featured-collection-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+    color: {{ block.settings.text_color }};
+    font-family: {{ block.settings.body_font.family }};
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__label {
+    margin: 0 0 10px;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__title {
+    margin: 0;
+    font-family: {{ block.settings.heading_font.family }};
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__link {
+    flex-shrink: 0;
+    color: {{ block.settings.text_color }};
+    font-size: 12px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px 16px;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__card {
+    min-width: 0;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 0.75;
+    border-radius: {{ block.settings.image_radius }}px;
+    background: {{ block.settings.image_background }};
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__image,
+  .ai-featured-collection-{{ ai_gen_id }}__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__image {
+    transition: opacity 280ms ease, transform 500ms ease;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__image--secondary {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__media:hover .ai-featured-collection-{{ ai_gen_id }}__image--primary,
+  .ai-featured-collection-{{ ai_gen_id }}__media:focus-within .ai-featured-collection-{{ ai_gen_id }}__image--primary {
+    transform: scale(1.035);
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__media:hover .ai-featured-collection-{{ ai_gen_id }}__image--secondary,
+  .ai-featured-collection-{{ ai_gen_id }}__media:focus-within .ai-featured-collection-{{ ai_gen_id }}__image--secondary {
+    opacity: 1;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__quick-add {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 14px;
+    background: {{ block.settings.quick_add_background }};
+    color: {{ block.settings.quick_add_text }};
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 220ms ease, transform 220ms ease;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__media:hover .ai-featured-collection-{{ ai_gen_id }}__quick-add,
+  .ai-featured-collection-{{ ai_gen_id }}__media:focus-within .ai-featured-collection-{{ ai_gen_id }}__quick-add {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__sold-out {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 7px 10px;
+    border-radius: 12px;
+    background: {{ block.settings.sold_out_background }};
+    color: {{ block.settings.sold_out_text }};
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__info {
+    padding-top: 14px;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__name {
+    display: block;
+    margin: 0 0 7px;
+    color: inherit;
+    font-size: 13px;
+    line-height: 1.35;
+    text-decoration: none;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__price {
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__compare {
+    color: {{ block.settings.muted_text_color }};
+    text-decoration: line-through;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 11px;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__swatch {
+    width: 13px;
+    height: 13px;
+    border: 1px solid {{ block.settings.swatch_border }};
+    border-radius: 50%;
+  }
+
+  .ai-featured-collection-{{ ai_gen_id }}__empty {
+    padding: 48px 0;
+    color: {{ block.settings.muted_text_color }};
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-featured-collection-{{ ai_gen_id }}__header {
+      align-items: start;
+      margin-bottom: 22px;
+    }
+
+    .ai-featured-collection-{{ ai_gen_id }}__title {
+      font-size: {{ block.settings.mobile_heading_size }}px;
+    }
+
+    .ai-featured-collection-{{ ai_gen_id }}__link {
+      display: none;
+    }
+
+    .ai-featured-collection-{{ ai_gen_id }}__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px 10px;
+    }
+
+    .ai-featured-collection-{{ ai_gen_id }}__quick-add {
+      right: 8px;
+      bottom: 8px;
+      left: 8px;
+      padding: 10px 8px;
+      font-size: 11px;
+      opacity: 1;
+      transform: none;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-featured-collection-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-featured-collection-{{ ai_gen_id }}__header">
+    <div>
+      <p class="ai-featured-collection-{{ ai_gen_id }}__label">{{ block.settings.label }}</p>
+      <h2 class="ai-featured-collection-{{ ai_gen_id }}__title">{{ block.settings.heading }}</h2>
+    </div>
+    {% if block.settings.collection != blank %}
+      <a class="ai-featured-collection-{{ ai_gen_id }}__link" href="{{ block.settings.collection.url }}">{{ block.settings.link_label }}</a>
+    {% endif %}
+  </div>
+
+  {% if block.settings.collection != blank and block.settings.collection.products_count > 0 %}
+    <div class="ai-featured-collection-{{ ai_gen_id }}__grid">
+      {% for product in block.settings.collection.products limit: block.settings.product_limit %}
+        {% assign primary_image = product.featured_image %}
+        {% assign secondary_image = product.images[1] %}
+        {% assign color_option = blank %}
+        {% for option in product.options_with_values %}
+          {% assign option_name = option.name | downcase %}
+          {% if option_name == 'color' or option_name == 'colour' %}
+            {% assign color_option = option %}
+          {% endif %}
+        {% endfor %}
+        <article class="ai-featured-collection-{{ ai_gen_id }}__card">
+          <div class="ai-featured-collection-{{ ai_gen_id }}__media">
+            <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+              {% if primary_image %}
+                <img class="ai-featured-collection-{{ ai_gen_id }}__image ai-featured-collection-{{ ai_gen_id }}__image--primary" src="{{ primary_image | image_url: width: 1000 }}" alt="{{ primary_image.alt | default: product.title | escape }}" loading="lazy" width="{{ primary_image.width }}" height="{{ primary_image.height }}">
+                {% if block.settings.show_second_image and secondary_image %}
+                  <img class="ai-featured-collection-{{ ai_gen_id }}__image ai-featured-collection-{{ ai_gen_id }}__image--secondary" src="{{ secondary_image | image_url: width: 1000 }}" alt="{{ secondary_image.alt | default: product.title | escape }}" loading="lazy" width="{{ secondary_image.width }}" height="{{ secondary_image.height }}">
+                {% endif %}
+              {% else %}
+                <div class="ai-featured-collection-{{ ai_gen_id }}__placeholder">{{ 'product-apparel-1' | placeholder_svg_tag }}</div>
+              {% endif %}
+            </a>
+            {% unless product.available %}<span class="ai-featured-collection-{{ ai_gen_id }}__sold-out">Sold out</span>{% endunless %}
+            {% if product.available and block.settings.show_quick_add %}
+              <form method="post" action="/cart/add" class="ai-featured-collection-{{ ai_gen_id }}__quick-add-form">
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                <button class="ai-featured-collection-{{ ai_gen_id }}__quick-add" type="submit">{{ block.settings.quick_add_label }}</button>
+              </form>
+            {% endif %}
+          </div>
+          <div class="ai-featured-collection-{{ ai_gen_id }}__info">
+            <a class="ai-featured-collection-{{ ai_gen_id }}__name" href="{{ product.url }}">{{ product.title }}</a>
+            <div class="ai-featured-collection-{{ ai_gen_id }}__price">
+              <span>{{ product.price | money }}</span>
+              {% if product.compare_at_price > product.price %}<span class="ai-featured-collection-{{ ai_gen_id }}__compare">{{ product.compare_at_price | money }}</span>{% endif %}
+            </div>
+            {% if color_option != blank %}
+              <div class="ai-featured-collection-{{ ai_gen_id }}__swatches" aria-label="Available colors">
+                {% for value in color_option.values limit: 8 %}<span class="ai-featured-collection-{{ ai_gen_id }}__swatch" title="{{ value | escape }}" style="background-color: {{ value | downcase | escape }};"></span>{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="ai-featured-collection-{{ ai_gen_id }}__empty">Select a collection to showcase your featured pieces.</p>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "label", "label": "Label", "default": "EDITOR’S SELECTION" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Featured Pieces" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "select", "id": "product_limit", "label": "Products", "options": [{ "value": "4", "label": "4" }, { "value": "5", "label": "5" }, { "value": "6", "label": "6" }], "default": "4" },
+    { "type": "text", "id": "link_label", "label": "Collection link", "default": "View all pieces" },
+    { "type": "header", "content": "Product cards" },
+    { "type": "checkbox", "id": "show_quick_add", "label": "Show quick add", "default": true },
+    { "type": "text", "id": "quick_add_label", "label": "Quick add label", "default": "Quick add" },
+    { "type": "checkbox", "id": "show_second_image", "label": "Show second image", "default": true },
+    { "type": "range", "id": "image_radius", "label": "Image radius", "min": 0, "max": 32, "step": 1, "unit": "px", "default": 10 },
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 24, "max": 72, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "mobile_heading_size", "label": "Mobile heading size", "min": 20, "max": 48, "step": 4, "unit": "px", "default": 32 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "muted_text_color", "label": "Muted text", "default": "#6B6B6B" },
+    { "type": "color", "id": "image_background", "label": "Image background", "default": "#F3F1EE" },
+    { "type": "color", "id": "quick_add_background", "label": "Quick add background", "default": "#FFFFFF" },
+    { "type": "color", "id": "quick_add_text", "label": "Quick add text", "default": "#111111" },
+    { "type": "color", "id": "sold_out_background", "label": "Sold out background", "default": "#FFFFFF" },
+    { "type": "color", "id": "sold_out_text", "label": "Sold out text", "default": "#111111" },
+    { "type": "color", "id": "swatch_border", "label": "Swatch border", "default": "#777777" },
+    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "inter_n7" },
+    { "type": "font_picker", "id": "body_font", "label": "Body font", "default": "inter_n4" }
+  ],
+  "presets": [{ "name": "Featured collection" }],
+  "tag": null,
+  "class": "premium-featured-collection"
+}
+{% endschema %}

@@ -1,0 +1,157 @@
+{% doc %}
+  @prompt
+    Create a premium Shopify footer for “Esraa Fashion Designer”.
+    
+    Use a deep charcoal background with warm ivory text.
+    
+    Include four areas:
+    
+    Brand:
+    
+    * Esraa Fashion Designer logo/name.
+    * Short elegant brand description.
+    
+    Shop:
+    
+    * All Pieces
+    * Shirts
+    * Suits
+    * New Arrivals
+    
+    Customer Care:
+    
+    * Contact
+    * Shipping
+    * Returns
+    * Privacy Policy
+    
+    Social:
+    
+    * Instagram
+    * TikTok
+    * Facebook
+    
+    Bottom area:
+    
+    * Copyright.
+    * Shopify enabled payment icons.
+    
+    Design:
+    
+    * Minimal and sophisticated.
+    * Generous spacing.
+    * Fine divider lines.
+    * Muted secondary text.
+    * Elegant hover effects.
+    * No oversized elements.
+    
+    Desktop:
+    Multi-column layout.
+    
+    Mobile:
+    Clean stacked or 2-column responsive layout.
+    
+    Allow navigation links and social URLs to be customized through Shopify.
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-footer-{{ ai_gen_id }} { display:block; width:100%; background:{{ block.settings.background_color }}; color:{{ block.settings.text_color }}; }
+  .ai-footer-{{ ai_gen_id }}__inner { width:{{ block.settings.desktop_width_percent }}%; max-width:1400px; margin:0 auto; padding:72px 5% 28px; }
+  .ai-footer-{{ ai_gen_id }}__grid { display:grid; grid-template-columns:minmax(220px,1.7fr) repeat(3,1fr); gap:48px; padding-bottom:64px; }
+  .ai-footer-{{ ai_gen_id }}__brand { max-width:310px; }
+  .ai-footer-{{ ai_gen_id }}__brand-name { margin:0 0 18px; color:{{ block.settings.text_color }}; font-family:{{ block.settings.heading_font.family }}; font-size:24px; line-height:1.15; letter-spacing:.02em; }
+  .ai-footer-{{ ai_gen_id }}__description { margin:0; color:{{ block.settings.muted_color }}; font-size:14px; line-height:1.8; }
+  .ai-footer-{{ ai_gen_id }}__title { margin:0 0 22px; color:{{ block.settings.text_color }}; font-size:12px; line-height:1.2; letter-spacing:.14em; text-transform:uppercase; }
+  .ai-footer-{{ ai_gen_id }}__links { display:flex; flex-direction:column; gap:13px; margin:0; padding:0; list-style:none; }
+  .ai-footer-{{ ai_gen_id }}__link { color:{{ block.settings.muted_color }}; font-size:14px; text-decoration:none; transition:color .2s ease; }
+  .ai-footer-{{ ai_gen_id }}__link:hover, .ai-footer-{{ ai_gen_id }}__link:focus-visible { color:{{ block.settings.text_color }}; text-decoration:underline; text-underline-offset:4px; }
+  .ai-footer-{{ ai_gen_id }}__bottom { display:flex; justify-content:space-between; align-items:center; gap:24px; border-top:1px solid {{ block.settings.divider_color }}; padding-top:24px; }
+  .ai-footer-{{ ai_gen_id }}__copyright { margin:0; color:{{ block.settings.muted_color }}; font-size:12px; }
+  .ai-footer-{{ ai_gen_id }}__payments { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:7px; color:{{ block.settings.muted_color }}; }
+  .ai-footer-{{ ai_gen_id }}__payments svg { width:38px; height:auto; }
+  @media screen and (max-width:749px) {
+    .ai-footer-{{ ai_gen_id }}__inner { width:100%; padding:52px 24px 24px; }
+    .ai-footer-{{ ai_gen_id }}__grid { grid-template-columns:repeat(2,1fr); gap:42px 24px; padding-bottom:48px; }
+    .ai-footer-{{ ai_gen_id }}__brand { grid-column:1/-1; max-width:none; }
+    .ai-footer-{{ ai_gen_id }}__bottom { align-items:flex-start; flex-direction:column; gap:20px; }
+    .ai-footer-{{ ai_gen_id }}__payments { justify-content:flex-start; }
+  }
+{% endstyle %}
+
+<footer class="ai-footer-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-footer-{{ ai_gen_id }}__inner">
+    <div class="ai-footer-{{ ai_gen_id }}__grid">
+      <div class="ai-footer-{{ ai_gen_id }}__brand">
+        <h2 class="ai-footer-{{ ai_gen_id }}__brand-name">{{ block.settings.brand_name | escape }}</h2>
+        <p class="ai-footer-{{ ai_gen_id }}__description">{{ block.settings.description | escape }}</p>
+      </div>
+      <nav aria-label="Shop">
+        <h3 class="ai-footer-{{ ai_gen_id }}__title">Shop</h3>
+        <ul class="ai-footer-{{ ai_gen_id }}__links">
+          {% assign shop_labels = 'All Pieces|Shirts|Suits|New Arrivals' | split: '|' %}
+          {% assign shop_links = 'shop_all_link|shirts_link|suits_link|new_arrivals_link' | split: '|' %}
+          {% for label in shop_labels %}<li><a class="ai-footer-{{ ai_gen_id }}__link" href="{{ block.settings[shop_links[forloop.index0]] }}">{{ label }}</a></li>{% endfor %}
+        </ul>
+      </nav>
+      <nav aria-label="Customer care">
+        <h3 class="ai-footer-{{ ai_gen_id }}__title">Customer care</h3>
+        <ul class="ai-footer-{{ ai_gen_id }}__links">
+          {% assign care_labels = 'Contact|Shipping|Returns|Privacy Policy' | split: '|' %}
+          {% assign care_links = 'contact_link|shipping_link|returns_link|privacy_link' | split: '|' %}
+          {% for label in care_labels %}<li><a class="ai-footer-{{ ai_gen_id }}__link" href="{{ block.settings[care_links[forloop.index0]] }}">{{ label }}</a></li>{% endfor %}
+        </ul>
+      </nav>
+      <nav aria-label="Social media">
+        <h3 class="ai-footer-{{ ai_gen_id }}__title">Social</h3>
+        <ul class="ai-footer-{{ ai_gen_id }}__links">
+          <li><a class="ai-footer-{{ ai_gen_id }}__link" href="{{ block.settings.instagram_url }}">Instagram</a></li>
+          <li><a class="ai-footer-{{ ai_gen_id }}__link" href="{{ block.settings.tiktok_url }}">TikTok</a></li>
+          <li><a class="ai-footer-{{ ai_gen_id }}__link" href="{{ block.settings.facebook_url }}">Facebook</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="ai-footer-{{ ai_gen_id }}__bottom">
+      <p class="ai-footer-{{ ai_gen_id }}__copyright">© {{ 'now' | date: '%Y' }} {{ block.settings.brand_name | escape }}. {{ block.settings.copyright_text | escape }}</p>
+      {% if block.settings.show_payment_icons %}<div class="ai-footer-{{ ai_gen_id }}__payments" aria-label="Accepted payment methods">{% for type in shop.enabled_payment_types %}{{ type | payment_type_svg_tag }}{% endfor %}</div>{% endif %}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Premium footer",
+  "settings": [
+    {"type":"header","content":"Brand"},
+    {"type":"text","id":"brand_name","label":"Name","default":"Esraa Fashion Designer"},
+    {"type":"textarea","id":"description","label":"Description","default":"Thoughtfully designed pieces for a refined, modern wardrobe."},
+    {"type":"text","id":"copyright_text","label":"Copyright suffix","default":"All rights reserved."},
+    {"type":"header","content":"Shop links"},
+    {"type":"url","id":"shop_all_link","label":"All pieces"},
+    {"type":"url","id":"shirts_link","label":"Shirts"},
+    {"type":"url","id":"suits_link","label":"Suits"},
+    {"type":"url","id":"new_arrivals_link","label":"New arrivals"},
+    {"type":"header","content":"Customer care links"},
+    {"type":"url","id":"contact_link","label":"Contact"},
+    {"type":"url","id":"shipping_link","label":"Shipping"},
+    {"type":"url","id":"returns_link","label":"Returns"},
+    {"type":"url","id":"privacy_link","label":"Privacy policy"},
+    {"type":"header","content":"Social links"},
+    {"type":"url","id":"instagram_url","label":"Instagram"},
+    {"type":"url","id":"tiktok_url","label":"TikTok"},
+    {"type":"url","id":"facebook_url","label":"Facebook"},
+    {"type":"header","content":"Style"},
+    {"type":"range","id":"desktop_width_percent","label":"Desktop width","min":50,"max":100,"step":5,"unit":"%","default":100},
+    {"type":"color","id":"background_color","label":"Background","default":"#242321"},
+    {"type":"color","id":"text_color","label":"Text","default":"#F7F1E6"},
+    {"type":"color","id":"muted_color","label":"Secondary text","default":"#C8C0B3"},
+    {"type":"color","id":"divider_color","label":"Divider","default":"#5A554C"},
+    {"type":"font_picker","id":"heading_font","label":"Brand font","default":"inter_n7"},
+    {"type":"checkbox","id":"show_payment_icons","label":"Show payment icons","default":true}
+  ],
+  "presets": [{"name":"Premium footer"}],
+  "tag": null,
+  "class": "premium-footer-block"
+}
+{% endschema %}

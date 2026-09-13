@@ -1,0 +1,758 @@
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+/* =========================================================
+   ESRAA — SHOP BY CATEGORY
+   ========================================================= */
+
+.ai-category-section-{{ ai_gen_id }} {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: {{ block.settings.background_color }};
+  color: {{ block.settings.text_color }};
+}
+
+.ai-category-section__inner-{{ ai_gen_id }} {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================================================
+   EDITORIAL HEADING
+   ========================================================= */
+
+.ai-category-section__header-{{ ai_gen_id }} {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding:
+    clamp(60px, 7vw, 110px)
+    clamp(30px, 6vw, 100px)
+    clamp(48px, 5vw, 80px);
+  box-sizing: border-box;
+}
+
+.ai-category-section__eyebrow-{{ ai_gen_id }} {
+  margin: 0 0 14px;
+  padding: 0;
+  color: {{ block.settings.accent_color }};
+  font-family: var(--font-body-family, sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.ai-category-section__heading-{{ ai_gen_id }} {
+  max-width: 850px;
+  margin: 0;
+  padding: 0;
+  color: {{ block.settings.text_color }};
+  font-family: var(--font-heading-family, serif);
+  font-size: clamp(48px, 5.7vw, 84px);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.ai-category-section__meta-{{ ai_gen_id }} {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin: 28px 0 0;
+  padding: 0;
+}
+
+.ai-category-section__meta-line-{{ ai_gen_id }} {
+  display: block;
+  width: 52px;
+  height: 1px;
+  background: {{ block.settings.accent_color }};
+  opacity: 0.55;
+}
+
+.ai-category-section__meta-text-{{ ai_gen_id }} {
+  color: {{ block.settings.accent_color }};
+  font-family: var(--font-body-family, sans-serif);
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.ai-category-section__grid-{{ ai_gen_id }} {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  border-top: 1px solid {{ block.settings.border_color }};
+  border-bottom: 1px solid {{ block.settings.border_color }};
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.ai-category-card-{{ ai_gen_id }} {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: {{ block.settings.desktop_height }}px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-right: 1px solid {{ block.settings.border_color }};
+  border-radius: 0;
+  background: #d8d0c5;
+  color: #ffffff;
+  text-decoration: none;
+  box-sizing: border-box;
+  isolation: isolate;
+}
+
+.ai-category-card-{{ ai_gen_id }}:last-child {
+  border-right: 0;
+}
+
+/* =========================================================
+   IMAGE / PICTURE
+   ========================================================= */
+
+.ai-category-card__picture-{{ ai_gen_id }} {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.ai-category-card__media-{{ ai_gen_id }} {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  object-fit: auto;
+  object-position: center;
+  transform: scale(1);
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.ai-category-card-{{ ai_gen_id }}:hover
+.ai-category-card__media-{{ ai_gen_id }} {
+  transform: scale(1.055);
+}
+
+/* =========================================================
+   PLACEHOLDER
+   ========================================================= */
+
+.ai-category-card__placeholder-{{ ai_gen_id }} {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: #d8d0c5;
+}
+
+.ai-category-card__placeholder-{{ ai_gen_id }} svg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.35;
+}
+
+/* =========================================================
+   GRADIENT
+   ========================================================= */
+
+.ai-category-card__shade-{{ ai_gen_id }} {
+  position: absolute;
+  inset: 28% 0 0;
+  z-index: 1;
+  display: block;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18, 16, 15, 0) 0%,
+      rgba(18, 16, 15, 0.05) 28%,
+      rgba(18, 16, 15, 0.2) 62%,
+      rgba(18, 16, 15, 0.82) 100%
+    );
+}
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.ai-category-card__content-{{ ai_gen_id }} {
+  position: absolute;
+  right: clamp(22px, 2.5vw, 40px);
+  bottom: clamp(24px, 3vw, 44px);
+  left: clamp(22px, 2.5vw, 40px);
+  z-index: 3;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+}
+
+.ai-category-card__title-{{ ai_gen_id }} {
+  display: block;
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
+  font-family: var(--font-heading-family, serif);
+  font-size: clamp(30px, 3.2vw, 52px);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+
+/* =========================================================
+   ARROW
+   ========================================================= */
+
+.ai-category-card__arrow-{{ ai_gen_id }} {
+  display: flex;
+  flex: 0 0 48px;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 50%;
+  background: transparent;
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 1;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.ai-category-card-{{ ai_gen_id }}:hover
+.ai-category-card__arrow-{{ ai_gen_id }} {
+  background: #ffffff;
+  color: #211d19;
+  transform: rotate(45deg);
+}
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
+.ai-category-card-{{ ai_gen_id }}:focus-visible {
+  outline: 2px solid {{ block.settings.accent_color }};
+  outline-offset: -2px;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media screen and (min-width: 750px) and (max-width: 1100px) {
+  .ai-category-card-{{ ai_gen_id }} {
+    height: {{ block.settings.desktop_height }}px;
+    min-height: 0;
+  }
+
+  .ai-category-card__title-{{ ai_gen_id }} {
+    font-size: clamp(27px, 3.5vw, 40px);
+  }
+}
+
+/* =========================================================
+   MOBILE — FULL PHONE SCREEN
+   ========================================================= */
+
+@media screen and (max-width: 749px) {
+  .ai-category-section-{{ ai_gen_id }} {
+    width: 100%;
+    height: {{ block.settings.mobile_height }}px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .ai-category-section__inner-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ai-category-section__header-{{ ai_gen_id }} {
+    flex: 0 0 auto;
+    width: 100%;
+    margin: 0;
+    padding: 24px 16px 20px;
+    box-sizing: border-box;
+  }
+
+  .ai-category-section__eyebrow-{{ ai_gen_id }} {
+    margin: 0 0 7px;
+    padding: 0;
+    font-size: 9px;
+    line-height: 1.2;
+    letter-spacing: 0.18em;
+  }
+
+  .ai-category-section__heading-{{ ai_gen_id }} {
+    max-width: 330px;
+    margin: 0;
+    padding: 0;
+    font-size: clamp(32px, 9.5vw, 44px);
+    line-height: 0.96;
+    letter-spacing: -0.04em;
+  }
+
+  .ai-category-section__meta-{{ ai_gen_id }} {
+    margin: 14px 0 0;
+    padding: 0;
+    gap: 10px;
+  }
+
+  .ai-category-section__meta-line-{{ ai_gen_id }} {
+    width: 34px;
+  }
+
+  .ai-category-section__meta-text-{{ ai_gen_id }} {
+    font-size: 8px;
+  }
+
+  .ai-category-section__grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+    border-top: 1px solid {{ block.settings.border_color }};
+    border-bottom: 0;
+    box-sizing: border-box;
+  }
+
+  .ai-category-card-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-right: 1px solid {{ block.settings.border_color }};
+    border-radius: 0;
+  }
+
+  .ai-category-card-{{ ai_gen_id }}:last-child {
+    border-right: 0;
+  }
+
+  .ai-category-card__picture-{{ ai_gen_id }},
+  .ai-category-card__media-{{ ai_gen_id }},
+  .ai-category-card__placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ai-category-card__media-{{ ai_gen_id }} {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .ai-category-card__shade-{{ ai_gen_id }} {
+    inset: 35% 0 0;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(18, 16, 15, 0) 0%,
+        rgba(18, 16, 15, 0.08) 35%,
+        rgba(18, 16, 15, 0.78) 100%
+      );
+  }
+
+  .ai-category-card__content-{{ ai_gen_id }} {
+    right: 5px;
+    bottom: 14px;
+    left: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .ai-category-card__title-{{ ai_gen_id }} {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: clamp(12px, 3.8vw, 17px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-align: center;
+  }
+
+  .ai-category-card__arrow-{{ ai_gen_id }} {
+    display: none;
+  }
+}
+
+/* =========================================================
+   SMALL PHONE
+   ========================================================= */
+
+@media screen and (max-width: 390px) {
+  .ai-category-card__title-{{ ai_gen_id }} {
+    font-size: 12px;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-category-card__media-{{ ai_gen_id }},
+  .ai-category-card__arrow-{{ ai_gen_id }} {
+    transition: none;
+  }
+}
+{% endstyle %}
+
+<div
+  class="ai-category-section-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-category-section__inner-{{ ai_gen_id }}">
+
+    <div class="ai-category-section__header-{{ ai_gen_id }}">
+      {% if block.settings.eyebrow != blank %}
+        <p class="ai-category-section__eyebrow-{{ ai_gen_id }}">
+          {{ block.settings.eyebrow }}
+        </p>
+      {% endif %}
+
+      {% if block.settings.heading != blank %}
+        <h2 class="ai-category-section__heading-{{ ai_gen_id }}">
+          {{ block.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if block.settings.small_text != blank %}
+        <div class="ai-category-section__meta-{{ ai_gen_id }}">
+          <span
+            class="ai-category-section__meta-line-{{ ai_gen_id }}"
+            aria-hidden="true"
+          ></span>
+
+          <span class="ai-category-section__meta-text-{{ ai_gen_id }}">
+            {{ block.settings.small_text }}
+          </span>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="ai-category-section__grid-{{ ai_gen_id }}">
+      {% for i in (1..3) %}
+        {% liquid
+          assign image_key = 'card_' | append: i | append: '_image'
+          assign mobile_image_key = 'card_' | append: i | append: '_mobile_image'
+          assign title_key = 'card_' | append: i | append: '_title'
+          assign link_key = 'card_' | append: i | append: '_link'
+
+          assign card_image = block.settings[image_key]
+          assign card_mobile_image = block.settings[mobile_image_key]
+          assign card_title = block.settings[title_key]
+          assign card_link = block.settings[link_key]
+        %}
+
+        {% if card_link != blank %}
+          <a
+            class="ai-category-card-{{ ai_gen_id }}"
+            href="{{ card_link }}"
+            aria-label="{{ card_title | escape }}"
+          >
+        {% else %}
+          <div class="ai-category-card-{{ ai_gen_id }}">
+        {% endif %}
+
+          {% if card_image != blank or card_mobile_image != blank %}
+            <picture class="ai-category-card__picture-{{ ai_gen_id }}">
+              {% if card_mobile_image != blank %}
+                <source
+                  media="(max-width: 749px)"
+                  srcset="
+                    {{ card_mobile_image | image_url: width: 240 }} 240w,
+                    {{ card_mobile_image | image_url: width: 360 }} 360w,
+                    {{ card_mobile_image | image_url: width: 480 }} 480w,
+                    {{ card_mobile_image | image_url: width: 720 }} 720w
+                  "
+                  sizes="33.333vw"
+                >
+              {% endif %}
+
+              {% assign fallback_image = card_image | default: card_mobile_image %}
+
+              <img
+                class="ai-category-card__media-{{ ai_gen_id }}"
+                src="{{ fallback_image | image_url: width: 1400 }}"
+                srcset="
+                  {{ fallback_image | image_url: width: 400 }} 400w,
+                  {{ fallback_image | image_url: width: 700 }} 700w,
+                  {{ fallback_image | image_url: width: 1000 }} 1000w,
+                  {{ fallback_image | image_url: width: 1400 }} 1400w
+                "
+                sizes="33.333vw"
+                alt="{{ fallback_image.alt | default: card_title | escape }}"
+                loading="lazy"
+                width="{{ fallback_image.width }}"
+                height="{{ fallback_image.height }}"
+              >
+            </picture>
+          {% else %}
+            <div class="ai-category-card__placeholder-{{ ai_gen_id }}">
+              {{ 'image' | placeholder_svg_tag }}
+            </div>
+          {% endif %}
+
+          <span
+            class="ai-category-card__shade-{{ ai_gen_id }}"
+            aria-hidden="true"
+          ></span>
+
+          <span class="ai-category-card__content-{{ ai_gen_id }}">
+            <span class="ai-category-card__title-{{ ai_gen_id }}">
+              {{ card_title }}
+            </span>
+
+            <span
+              class="ai-category-card__arrow-{{ ai_gen_id }}"
+              aria-hidden="true"
+            >
+              ↗
+            </span>
+          </span>
+
+        {% if card_link != blank %}
+          </a>
+        {% else %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Shop by category",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small label",
+      "default": "CURATED WARDROBE"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by Category"
+    },
+    {
+      "type": "text",
+      "id": "small_text",
+      "label": "Small decorative text",
+      "default": "Discover the collection"
+    },
+
+    {
+      "type": "header",
+      "content": "Category 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_1_image",
+      "label": "Category 1 desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_1_mobile_image",
+      "label": "Category 1 mobile image"
+    },
+    {
+      "type": "text",
+      "id": "card_1_title",
+      "label": "Category 1 title",
+      "default": "Shirts"
+    },
+    {
+      "type": "url",
+      "id": "card_1_link",
+      "label": "Category 1 link"
+    },
+
+    {
+      "type": "header",
+      "content": "Category 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_2_image",
+      "label": "Category 2 desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_2_mobile_image",
+      "label": "Category 2 mobile image"
+    },
+    {
+      "type": "text",
+      "id": "card_2_title",
+      "label": "Category 2 title",
+      "default": "Suits"
+    },
+    {
+      "type": "url",
+      "id": "card_2_link",
+      "label": "Category 2 link"
+    },
+
+    {
+      "type": "header",
+      "content": "Category 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_3_image",
+      "label": "Category 3 desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_3_mobile_image",
+      "label": "Category 3 mobile image"
+    },
+    {
+      "type": "text",
+      "id": "card_3_title",
+      "label": "Category 3 title",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "url",
+      "id": "card_3_link",
+      "label": "Category 3 link"
+    },
+
+    {
+      "type": "header",
+      "content": "Section height"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "min": 400,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "label": "Desktop card height",
+      "default": 760
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "min": 400,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "label": "Mobile section height",
+      "default": 700
+    },
+
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#F5F0E8"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Heading color",
+      "default": "#211D19"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#6A4E3B"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Card border color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop by category"
+    }
+  ],
+  "tag": null,
+  "class": "shop-by-category-block"
+}
+{% endschema %}

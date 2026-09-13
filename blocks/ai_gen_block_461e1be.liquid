@@ -1,0 +1,201 @@
+{% doc %}
+  @prompt
+    Create a luxury Shopify “New Arrivals” product section for Esraa Fashion Designer.
+    
+    Small label:
+    “JUST IN”
+    
+    Heading:
+    “New Arrivals”
+    
+    Allow a Shopify collection to be selected from the Theme Editor.
+    
+    Show the latest 4–8 products.
+    
+    Each product should display:
+    
+    * Large fashion image.
+    * Product name.
+    * Price.
+    * Compare-at price if applicable.
+    * Color swatches.
+    * Quick Add.
+    * Sold Out state.
+    
+    Desktop:
+    4 products per row.
+    
+    Mobile:
+    2 products per row.
+    
+    Keep the layout clean, spacious, and editorial.
+    
+    Avoid heavy card borders and excessive shadows.
+    
+    Add subtle image zoom and Quick Add reveal on desktop hover.
+    
+    Add a “Shop New Arrivals” button near the section heading.
+    , Create a premium editorial Shopify section for “Esraa Fashion Designer” centered around the emotional relationship between a mother and her daughter.
+    
+    The section should feel warm, feminine, elegant, and cinematic.
+    
+    Concept:
+    Show a mother and daughter wearing coordinated modest Esraa outfits. The styling should feel refined and natural, not like generic stock photography.
+    
+    Main headline:
+    “Elegance Passed from Her to You”
+    
+    Supporting text:
+    “A shared sense of style, grace, and confidence — beautifully expressed across generations.”
+    
+    Optional secondary line:
+    “Designed for moments you remember together.”
+    
+    CTA:
+    “Shop Mother & Daughter”
+    
+    Visual direction:
+    
+    * Large fashion photography.
+    * Mother and daughter positioned naturally together.
+    * Coordinated but not identical outfits.
+    * Elegant modest silhouettes.
+    * Hijab styling where appropriate.
+    * Soft ivory, beige, dusty rose, burgundy, taupe, or deep plum tones.
+    * Warm editorial lighting.
+    * Premium textured fabrics such as embroidery, lace, satin details, sequins, or soft structured fabrics.
+    * Avoid cliché family stock imagery.
+    * Focus strongly on clothing, expressions, fabric details, and connection.
+    
+    Motion concept:
+    Create subtle motion that visually represents the bond between mother and daughter.
+    
+    Desktop animation:
+    
+    * Use two overlapping image panels.
+    * Mother image enters gently from the left.
+    * Daughter image enters gently from the right.
+    * As the user scrolls, both images slowly move toward the center.
+    * Add very subtle parallax movement to both images.
+    * Text fades upward between or beside the images.
+    * Add a delicate curved line or soft animated stroke connecting the two visual panels.
+    * On hover, images should have a very subtle slow zoom.
+    
+    Optional alternative motion:
+    Use one large cinematic image with mother and daughter together and create a slow Ken Burns-style zoom while soft text fades in progressively.
+    
+    Mobile:
+    
+    * Stack the visuals vertically.
+    * Mother image first and daughter image second.
+    * Use soft scroll-triggered reveal animations.
+    * Avoid strong parallax on mobile.
+    * Keep animation smooth and lightweight.
+    * Preserve clothing visibility and do not crop important outfit details.
+    
+    Layout:
+    Desktop:
+    
+    * Split editorial composition.
+    * Approx. 40% mother image.
+    * 20% centered content.
+    * 40% daughter image.
+      OR use overlapping asymmetric image cards for a more artistic fashion-magazine layout.
+    
+    Mobile:
+    
+    * Full-width editorial cards.
+    * Text placed between the two images.
+    * Comfortable spacing.
+    * CTA full-width or centered.
+    
+    Design style:
+    
+    * Warm ivory background.
+    * Dark charcoal text.
+    * Burgundy or deep plum accents.
+    * Soft rounded image corners.
+    * Generous whitespace.
+    * Elegant serif-style headings combined with clean body typography.
+    * Avoid heavy shadows and excessive borders.
+    
+    Animation requirements:
+    
+    * Use CSS transform and opacity animations whenever possible.
+    * Use IntersectionObserver for scroll-triggered effects.
+    * Keep transitions around 600–1000ms.
+    * Use smooth easing.
+    * Respect prefers-reduced-motion.
+    * Do not use heavy JavaScript animation libraries.
+    * Optimize for Shopify performance.
+    
+    Shopify Theme Editor settings:
+    
+    * Mother image.
+    * Daughter image.
+    * Optional shared mother/daughter image.
+    * Heading.
+    * Description.
+    * CTA text.
+    * CTA link.
+    * Image position.
+    * Section height.
+    * Background color.
+    * Accent color.
+    * Enable/disable parallax.
+    * Animation intensity.
+    * Mobile image position.
+    
+    The final section should feel emotional, luxurious, editorial, and fashion-led — showing the connection between mother and daughter through movement, styling, and composition rather than using obvious hearts or childish graphics.
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+{% style %}
+  .ai-mother-daughter-{{ ai_gen_id }} { display:block; width:{{ block.settings.desktop_width_percent }}%; max-width:100%; min-height:{{ block.settings.section_height }}px; background:{{ block.settings.background_color }}; color:{{ block.settings.text_color }}; overflow:hidden; }
+  .ai-mother-daughter-{{ ai_gen_id }}__inner { position:relative; display:grid; grid-template-columns:40% 20% 40%; align-items:center; gap:20px; min-height:{{ block.settings.section_height }}px; padding:48px; }
+  .ai-mother-daughter-{{ ai_gen_id }}__visual { position:relative; overflow:hidden; border-radius:{{ block.settings.corner_radius }}px; opacity:0; transition:opacity 900ms ease, transform 900ms cubic-bezier(.2,.7,.2,1); }
+  .ai-mother-daughter-{{ ai_gen_id }}__visual--mother { transform:translateX(-{{ block.settings.animation_distance }}px); }
+  .ai-mother-daughter-{{ ai_gen_id }}__visual--daughter { transform:translateX({{ block.settings.animation_distance }}px); }
+  .ai-mother-daughter-{{ ai_gen_id }}.is-visible .ai-mother-daughter-{{ ai_gen_id }}__visual { opacity:1; transform:translateX(0); }
+  .ai-mother-daughter-{{ ai_gen_id }}__visual:after { content:""; position:absolute; inset:0; background:linear-gradient(135deg,rgba(77,25,43,.08),transparent 55%); pointer-events:none; }
+  .ai-mother-daughter-{{ ai_gen_id }}__image, .ai-mother-daughter-{{ ai_gen_id }}__placeholder svg { display:block; width:100%; height:100%; object-fit:cover; transition:transform 1000ms ease; }
+  .ai-mother-daughter-{{ ai_gen_id }}__visual--mother, .ai-mother-daughter-{{ ai_gen_id }}__visual--daughter { height:{{ block.settings.image_height }}px; }
+  .ai-mother-daughter-{{ ai_gen_id }}__visual:hover .ai-mother-daughter-{{ ai_gen_id }}__image { transform:scale(1.035); }
+  .ai-mother-daughter-{{ ai_gen_id }}__placeholder { height:100%; background:#e9dfd3; }
+  .ai-mother-daughter-{{ ai_gen_id }}__content { position:relative; z-index:2; text-align:center; opacity:0; transform:translateY(28px); transition:opacity 900ms ease 180ms,transform 900ms ease 180ms; }
+  .ai-mother-daughter-{{ ai_gen_id }}.is-visible .ai-mother-daughter-{{ ai_gen_id }}__content { opacity:1; transform:translateY(0); }
+  .ai-mother-daughter-{{ ai_gen_id }}__content:before { content:""; position:absolute; width:120px; height:70px; border-top:1px solid {{ block.settings.accent_color }}; border-radius:50%; left:50%; top:-30px; transform:translateX(-50%) rotate(-8deg); opacity:.65; }
+  .ai-mother-daughter-{{ ai_gen_id }}__eyebrow { margin:0 0 16px; color:{{ block.settings.accent_color }}; font-size:11px; letter-spacing:.18em; text-transform:uppercase; }
+  .ai-mother-daughter-{{ ai_gen_id }}__heading { margin:0; font-family:{{ block.settings.heading_font.family }}; font-size:{{ block.settings.heading_size }}px; line-height:1.08; font-weight:400; }
+  .ai-mother-daughter-{{ ai_gen_id }}__text { margin:22px auto 0; max-width:280px; font-size:14px; line-height:1.7; }
+  .ai-mother-daughter-{{ ai_gen_id }}__secondary { margin:14px 0 0; font-size:12px; font-style:italic; opacity:.75; }
+  .ai-mother-daughter-{{ ai_gen_id }}__cta { display:inline-block; margin-top:28px; padding:13px 20px; background:{{ block.settings.accent_color }}; color:#fff; text-decoration:none; font-size:11px; letter-spacing:.1em; text-transform:uppercase; border-radius:{{ block.settings.button_radius }}px; }
+  @media screen and (max-width:749px) {
+    .ai-mother-daughter-{{ ai_gen_id }} { width:100%; min-height:0; }
+    .ai-mother-daughter-{{ ai_gen_id }}__inner { display:flex; flex-direction:column; gap:26px; min-height:0; padding:28px 18px 40px; }
+    .ai-mother-daughter-{{ ai_gen_id }}__visual--mother, .ai-mother-daughter-{{ ai_gen_id }}__visual--daughter { width:100%; height:{{ block.settings.mobile_image_height }}px; }
+    .ai-mother-daughter-{{ ai_gen_id }}__visual--mother { order:1; }
+    .ai-mother-daughter-{{ ai_gen_id }}__content { order:2; }
+    .ai-mother-daughter-{{ ai_gen_id }}__visual--daughter { order:3; }
+    .ai-mother-daughter-{{ ai_gen_id }}__heading { font-size:{{ block.settings.mobile_heading_size }}px; }
+    .ai-mother-daughter-{{ ai_gen_id }}__cta { width:100%; box-sizing:border-box; }
+  }
+  @media (prefers-reduced-motion:reduce) { .ai-mother-daughter-{{ ai_gen_id }}__visual,.ai-mother-daughter-{{ ai_gen_id }}__content,.ai-mother-daughter-{{ ai_gen_id }}__image { transition:none; transform:none; } }
+{% endstyle %}
+<editorial-bond-{{ ai_gen_id }} class="ai-mother-daughter-{{ ai_gen_id }}" data-parallax="{{ block.settings.enable_parallax }}" data-intensity="{{ block.settings.parallax_intensity }}" {{ block.shopify_attributes }}>
+  <div class="ai-mother-daughter-{{ ai_gen_id }}__inner">
+    <div class="ai-mother-daughter-{{ ai_gen_id }}__visual ai-mother-daughter-{{ ai_gen_id }}__visual--mother">
+      {% if block.settings.mother_image %}<img class="ai-mother-daughter-{{ ai_gen_id }}__image" src="{{ block.settings.mother_image | image_url: width: 1200 }}" alt="{{ block.settings.mother_image.alt | default: 'Mother wearing an Esraa outfit' | escape }}" loading="lazy" width="1200" height="{{ block.settings.image_height }}">{% elsif block.settings.shared_image %}<img class="ai-mother-daughter-{{ ai_gen_id }}__image" src="{{ block.settings.shared_image | image_url: width: 1200 }}" alt="{{ block.settings.shared_image.alt | escape }}" loading="lazy" width="1200" height="{{ block.settings.image_height }}">{% else %}<div class="ai-mother-daughter-{{ ai_gen_id }}__placeholder">{{ 'hero-apparel-1' | placeholder_svg_tag }}</div>{% endif %}
+    </div>
+    <div class="ai-mother-daughter-{{ ai_gen_id }}__content"><p class="ai-mother-daughter-{{ ai_gen_id }}__eyebrow">Esraa Fashion Designer</p><h2 class="ai-mother-daughter-{{ ai_gen_id }}__heading">{{ block.settings.heading }}</h2><div class="ai-mother-daughter-{{ ai_gen_id }}__text">{{ block.settings.description }}</div>{% if block.settings.secondary_line != blank %}<p class="ai-mother-daughter-{{ ai_gen_id }}__secondary">{{ block.settings.secondary_line }}</p>{% endif %}{% if block.settings.cta_link != blank %}<a class="ai-mother-daughter-{{ ai_gen_id }}__cta" href="{{ block.settings.cta_link }}">{{ block.settings.cta_text }}</a>{% endif %}</div>
+    <div class="ai-mother-daughter-{{ ai_gen_id }}__visual ai-mother-daughter-{{ ai_gen_id }}__visual--daughter">
+      {% if block.settings.daughter_image %}<img class="ai-mother-daughter-{{ ai_gen_id }}__image" src="{{ block.settings.daughter_image | image_url: width: 1200 }}" alt="{{ block.settings.daughter_image.alt | default: 'Daughter wearing an Esraa outfit' | escape }}" loading="lazy" width="1200" height="{{ block.settings.image_height }}">{% elsif block.settings.shared_image %}<img class="ai-mother-daughter-{{ ai_gen_id }}__image" src="{{ block.settings.shared_image | image_url: width: 1200 }}" alt="{{ block.settings.shared_image.alt | escape }}" loading="lazy" width="1200" height="{{ block.settings.image_height }}">{% else %}<div class="ai-mother-daughter-{{ ai_gen_id }}__placeholder">{{ 'hero-apparel-1' | placeholder_svg_tag }}</div>{% endif %}
+    </div>
+  </div>
+</editorial-bond-{{ ai_gen_id }}>
+<script>
+(function(){var tag='editorial-bond-{{ ai_gen_id }}';if(customElements.get(tag))return;customElements.define(tag,class extends HTMLElement{connectedCallback(){this.reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(this.reduced){this.classList.add('is-visible');return;}this.observer=new IntersectionObserver((entries)=>{if(entries[0].isIntersecting){this.classList.add('is-visible');this.observer.disconnect();}},{threshold:.18});this.observer.observe(this);if(this.dataset.parallax==='true'&&window.matchMedia('(min-width: 750px)').matches){this.addEventListener('pointermove',(event)=>{var rect=this.getBoundingClientRect();var y=(event.clientY-rect.top)/rect.height-.5;this.style.setProperty('--bond-y',(y*Number(this.dataset.intensity))+'px');});}}});})();
+</script>
+{% schema %}
+{"name":"Mother and daughter story","settings":[{"type":"header","content":"Images"},{"type":"image_picker","id":"mother_image","label":"Mother image"},{"type":"image_picker","id":"daughter_image","label":"Daughter image"},{"type":"image_picker","id":"shared_image","label":"Shared image"},{"type":"select","id":"image_position","label":"Image position","options":[{"value":"center","label":"Center"},{"value":"top","label":"Top"},{"value":"bottom","label":"Bottom"}],"default":"center"},{"type":"select","id":"mobile_image_position","label":"Mobile image position","options":[{"value":"center","label":"Center"},{"value":"top","label":"Top"},{"value":"bottom","label":"Bottom"}],"default":"center"},{"type":"header","content":"Content"},{"type":"text","id":"heading","label":"Heading","default":"Elegance Passed from Her to You"},{"type":"textarea","id":"description","label":"Description","default":"A shared sense of style, grace, and confidence — beautifully expressed across generations."},{"type":"text","id":"secondary_line","label":"Secondary line","default":"Designed for moments you remember together."},{"type":"text","id":"cta_text","label":"CTA text","default":"Shop Mother & Daughter"},{"type":"url","id":"cta_link","label":"CTA link"},{"type":"header","content":"Layout and motion"},{"type":"range","id":"desktop_width_percent","label":"Desktop width","min":50,"max":100,"step":5,"unit":"%","default":100},{"type":"range","id":"section_height","label":"Section height","min":500,"max":900,"step":50,"unit":"px","default":700},{"type":"range","id":"image_height","label":"Desktop image height","min":400,"max":800,"step":50,"unit":"px","default":600},{"type":"range","id":"mobile_image_height","label":"Mobile image height","min":280,"max":600,"step":20,"unit":"px","default":420},{"type":"checkbox","id":"enable_parallax","label":"Enable parallax","default":true},{"type":"select","id":"parallax_intensity","label":"Animation intensity","options":[{"value":"4","label":"Subtle"},{"value":"8","label":"Moderate"},{"value":"12","label":"Expressive"}],"default":"4"},{"type":"range","id":"animation_distance","label":"Reveal distance","min":10,"max":80,"step":10,"unit":"px","default":30},{"type":"header","content":"Style"},{"type":"font_picker","id":"heading_font","label":"Heading font","default":"anonymous_pro_n4"},{"type":"range","id":"heading_size","label":"Heading size","min":28,"max":72,"step":4,"unit":"px","default":48},{"type":"range","id":"mobile_heading_size","label":"Mobile heading size","min":24,"max":48,"step":4,"unit":"px","default":32},{"type":"range","id":"corner_radius","label":"Image corner radius","min":0,"max":32,"step":4,"unit":"px","default":12},{"type":"range","id":"button_radius","label":"Button corner radius","min":0,"max":24,"step":4,"unit":"px","default":4},{"type":"color","id":"background_color","label":"Background","default":"#F6F0E9"},{"type":"color","id":"text_color","label":"Text","default":"#292525"},{"type":"color","id":"accent_color","label":"Accent","default":"#6B263A"}],"presets":[{"name":"Mother and daughter story"}],"tag":null,"class":"editorial-bond-block"}
+{% endschema %}
