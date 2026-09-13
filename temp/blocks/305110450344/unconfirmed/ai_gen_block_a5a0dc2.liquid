@@ -1,6 +1,56 @@
+{% doc %}
+  @prompt
+    create col --> row(icon) +col (title and subtitle)
+    3 col 
+    vertical in desktop 
+    and responsiive it in combile 
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+{% style %}
+  .ai-feature-columns-{{ ai_gen_id }} { display:block; width:{{ block.settings.desktop_width_percent }}%; max-width:100%; margin:0 auto; color:{{ block.settings.text_color }}; background:{{ block.settings.background_color }}; padding:{{ block.settings.vertical_padding }}px {{ block.settings.horizontal_padding }}px; }
+  .ai-feature-columns__grid-{{ ai_gen_id }} { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:{{ block.settings.column_gap }}px; width:100%; }
+  .ai-feature-columns__item-{{ ai_gen_id }} { display:flex; align-items:flex-start; gap:{{ block.settings.icon_gap }}px; min-width:0; }
+  .ai-feature-columns__icon-{{ ai_gen_id }} { flex:0 0 {{ block.settings.icon_size }}px; width:{{ block.settings.icon_size }}px; height:{{ block.settings.icon_size }}px; display:flex; align-items:center; justify-content:center; color:{{ block.settings.icon_color }}; }
+  .ai-feature-columns__icon-{{ ai_gen_id }} img,.ai-feature-columns__icon-{{ ai_gen_id }} svg { display:block; width:100%; height:100%; object-fit:contain; }
+  .ai-feature-columns__icon-placeholder-{{ ai_gen_id }} { width:100%; height:100%; }
+  .ai-feature-columns__icon-placeholder-{{ ai_gen_id }} svg { fill:none; stroke:currentColor; stroke-width:1.5; }
+  .ai-feature-columns__content-{{ ai_gen_id }} { min-width:0; }
+  .ai-feature-columns__title-{{ ai_gen_id }} { margin:0 0 6px; color:{{ block.settings.title_color }}; font-family:{{ settings.type_heading_font.family }},sans-serif; font-size:{{ block.settings.title_size }}px; line-height:1.2; font-weight:600; }
+  .ai-feature-columns__subtitle-{{ ai_gen_id }} { margin:0; color:{{ block.settings.subtitle_color }}; font-family:{{ settings.type_body_font.family }},sans-serif; font-size:{{ block.settings.subtitle_size }}px; line-height:1.5; }
+  @media screen and (max-width:749px) { .ai-feature-columns-{{ ai_gen_id }} { padding:{{ block.settings.mobile_vertical_padding }}px {{ block.settings.mobile_horizontal_padding }}px; } .ai-feature-columns__grid-{{ ai_gen_id }} { grid-template-columns:1fr; gap:{{ block.settings.mobile_item_gap }}px; } }
+{% endstyle %}
+<div class="ai-feature-columns-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-feature-columns__grid-{{ ai_gen_id }}">
+    {% for i in (1..3) %}
+      {% liquid
+        assign icon_key = 'icon_' | append: i
+        assign title_key = 'title_' | append: i
+        assign subtitle_key = 'subtitle_' | append: i
+        assign icon = block.settings[icon_key]
+        assign title = block.settings[title_key]
+        assign subtitle = block.settings[subtitle_key]
+      %}
+      <div class="ai-feature-columns__item-{{ ai_gen_id }}">
+        <div class="ai-feature-columns__icon-{{ ai_gen_id }}" aria-hidden="true">
+          {% if icon != blank %}<img src="{{ icon | image_url: width: 160 }}" alt="" width="{{ block.settings.icon_size }}" height="{{ block.settings.icon_size }}" loading="lazy">{% else %}<div class="ai-feature-columns__icon-placeholder-{{ ai_gen_id }}">{{ 'image' | placeholder_svg_tag }}</div>{% endif %}
+        </div>
+        <div class="ai-feature-columns__content-{{ ai_gen_id }}">{% if title != blank %}<h3 class="ai-feature-columns__title-{{ ai_gen_id }}">{{ title }}</h3>{% endif %}{% if subtitle != blank %}<p class="ai-feature-columns__subtitle-{{ ai_gen_id }}">{{ subtitle }}</p>{% endif %}</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name":"Feature columns",
+  "settings":[
+    {"type":"header","content":"Features"},
+    {"type":"image_picker","id":"icon_1","label":"Icon 1"},{"type":"text","id":"title_1","label":"Title 1","default":"Premium quality"},{"type":"textarea","id":"subtitle_1","label":"Subtitle 1","default":"Thoughtfully designed pieces made to last."},
+    {"type":"image_picker","id":"icon_2","label":"Icon 2"},{"type":"text","id":"title_2","label":"Title 2","default":"Easy shopping"},{"type":"textarea","id":"subtitle_2","label":"Subtitle 2","default":"A simple experience from discovery to delivery."},
+    {"type":"image_picker","id":"icon_3","label":"Icon 3"},{"type":"text","id":"title_3","label":"Title 3","default":"Made for you"},{"type":"textarea","id":"subtitle_3","label":"Subtitle 3","default":"Styles created to make every day feel special."},
+    {"type":"header","content":"Layout"},{"type":"range","id":"desktop_width_percent","label":"Desktop width","min":50,"max":100,"step":5,"unit":"%","default":100},{"type":"range","id":"column_gap","label":"Column gap","min":8,"max":80,"step":4,"unit":"px","default":32},{"type":"range","id":"icon_gap","label":"Icon gap","min":4,"max":32,"step":2,"unit":"px","default":14},{"type":"range","id":"icon_size","label":"Icon size","min":24,"max":80,"step":4,"unit":"px","default":40},{"type":"range","id":"vertical_padding","label":"Vertical padding","min":0,"max":80,"step":4,"unit":"px","default":24},{"type":"range","id":"horizontal_padding","label":"Horizontal padding","min":0,"max":80,"step":4,"unit":"px","default":24},{"type":"range","id":"mobile_item_gap","label":"Mobile item gap","min":8,"max":48,"step":4,"unit":"px","default":24},{"type":"range","id":"mobile_vertical_padding","label":"Mobile vertical padding","min":0,"max":60,"step":4,"unit":"px","default":20},{"type":"range","id":"mobile_horizontal_padding","label":"Mobile horizontal padding","min":0,"max":40,"step":4,"unit":"px","default":16},
+    {"type":"header","content":"Colors and type"},{"type":"color","id":"background_color","label":"Background","default":"#FFFDFC"},{"type":"color","id":"title_color","label":"Title","default":"#2A2526"},{"type":"color","id":"subtitle_color","label":"Subtitle","default":"#746A68"},{"type":"color","id":"text_color","label":"Text","default":"#2A2526"},{"type":"color","id":"icon_color","label":"Icon","default":"#6D263D"},{"type":"range","id":"title_size","label":"Title size","min":12,"max":28,"step":1,"unit":"px","default":18},{"type":"range","id":"subtitle_size","label":"Subtitle size","min":10,"max":20,"step":1,"unit":"px","default":14}
+  ],
+  "presets":[{"name":"Feature columns"}],"tag":null,"class":"feature-columns-block"
+}
 {% endschema %}
